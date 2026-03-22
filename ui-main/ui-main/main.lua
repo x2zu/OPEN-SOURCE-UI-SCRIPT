@@ -1536,7 +1536,7 @@ function Nemesis:Window(GuiConfig)
                 {
                     Name = "Yes",
                     Callback = function()
-                        if Nemesis then Nemesis:Destroy() end
+                        if Nemesis then NemesisGui:Destroy() end
                         if GuiFunc._toggleGui then
                             pcall(function() GuiFunc._toggleGui:Destroy() end)
                             GuiFunc._toggleGui = nil
