@@ -672,7 +672,7 @@ function Nemesis:Window(GuiConfig)
     
     local GuiFunc = {}
 
-    local Nemesis           = Instance.new("ScreenGui")
+    local NemesisGui           = Instance.new("ScreenGui")
     local DropShadowHolder  = Instance.new("Frame")
     local DropShadow        = Instance.new("ImageLabel")
     local Main              = Instance.new("Frame")
@@ -686,10 +686,10 @@ function Nemesis:Window(GuiConfig)
     local Min               = Instance.new("TextButton")
     local ImageLabel2       = Instance.new("ImageLabel")
 
-    Nemesis.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    Nemesis.Name = "Nemesis"
-    Nemesis.ResetOnSpawn = false
-    Nemesis.Parent = game:GetService("CoreGui")
+    NemesisGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    NemesisGui.Name = "Nemesis"
+    NemesisGui.ResetOnSpawn = false
+    NemesisGui.Parent = game:GetService("CoreGui")
 
     DropShadowHolder.BackgroundTransparency = 1
     DropShadowHolder.BorderSizePixel = 0
@@ -706,11 +706,11 @@ function Nemesis:Window(GuiConfig)
 
     DropShadowHolder.ZIndex = 0
     DropShadowHolder.Name = "DropShadowHolder"
-    DropShadowHolder.Parent = Nemesis
+    DropShadowHolder.Parent = NemesisGui
 
     DropShadowHolder.Position = UDim2.new(
-        0, (Nemesis.AbsoluteSize.X // 2 - DropShadowHolder.Size.X.Offset // 2),
-        0, (Nemesis.AbsoluteSize.Y // 2 - DropShadowHolder.Size.Y.Offset // 2)
+        0, (NemesisGui.AbsoluteSize.X // 2 - DropShadowHolder.Size.X.Offset // 2),
+        0, (NemesisGui.AbsoluteSize.Y // 2 - DropShadowHolder.Size.Y.Offset // 2)
     )
 
     DropShadow.Image = "rbxassetid://6015897843"
@@ -1514,7 +1514,7 @@ function Nemesis:Window(GuiConfig)
 
     function GuiFunc:DestroyGui()
         if CoreGui:FindFirstChild("Nemesis") then
-            Nemesis:Destroy()
+            NemesisGui:Destroy()
         end
     end
 
