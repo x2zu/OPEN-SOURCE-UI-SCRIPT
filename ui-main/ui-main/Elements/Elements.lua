@@ -1,7 +1,3 @@
--- // vilarisUi | Elements.lua
--- Upgrade: CreateToggle kini support drag horizontal + scroll guard (Wind UI style)
--- Upgrade: CreateToggle & CreateCheckbox support cfg.Icon di dalam knob/checkbox
-
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local LocalPlayer = game:GetService("Players").LocalPlayer
