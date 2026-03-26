@@ -2190,6 +2190,16 @@ function Nemesis:Window(GuiConfig)
 
     return Tabs
 end
-
+ConfigModule(
+    Nemesis,
+    function() return ConfigFolder end,
+    function() return CURRENT_VERSION end,
+    function() return ConfigData end,
+    function() return Elements end,
+    LoadConfigElements,
+    SaveConfig,
+    Nt,
+    function() return AUTO_LOAD end
+)
 NemesisUI = Nemesis
 return Nemesis
