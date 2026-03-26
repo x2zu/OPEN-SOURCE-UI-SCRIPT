@@ -96,7 +96,7 @@ return function(Nemesis, getConfigFolder, getCURRENT_VERSION, getConfigData, get
                     end
                     return true
                 else
-                    notify("Version mismatch on '" .. name .. "'!", 3, Color3.fromRGB(255, 165, 0))
+                    notify("Version mismatch on '" .. name .. "'!", 3, Color3.fromRGB(142, 130, 254))
                 end
             end
             return false
@@ -136,7 +136,6 @@ return function(Nemesis, getConfigFolder, getCURRENT_VERSION, getConfigData, get
         local dropdownRef    = nil
         local autoloadLabel  = nil
 
-        -- Input nama config
         local nameInput = Sections:AddInput({
             Title       = "Config name",
             Placeholder = "Enter config name...",
@@ -145,7 +144,6 @@ return function(Nemesis, getConfigFolder, getCURRENT_VERSION, getConfigData, get
             Callback    = function() end,
         })
 
-        -- Baris 1: Create | Refresh
         Sections:AddButton({
             Title    = "Create",
             SubTitle = "Refresh",
@@ -153,27 +151,26 @@ return function(Nemesis, getConfigFolder, getCURRENT_VERSION, getConfigData, get
                 local raw  = nameInput and nameInput.Value or ""
                 local name = raw:match("^%s*(.-)%s*$"):gsub("[^%w_%-]", "_")
                 if name == "" then
-                    notify("Config name cannot be empty!", 3, Color3.fromRGB(255, 80, 80))
+                    notify("Config name cannot be empty!", 3, Color3.fromRGB(142, 130, 254))
                     return
                 end
                 if saveConfig(name) then
-                    notify("Config '" .. name .. "' created!", 3, Color3.fromRGB(80, 220, 100))
+                    notify("Config '" .. name .. "' created!", 3, Color3.fromRGB(142, 130, 254))
                     if dropdownRef then
                         dropdownRef:SetValues(getList(), selectedConfig)
                     end
                 else
-                    notify("Failed to create config!", 3, Color3.fromRGB(255, 80, 80))
+                    notify("Failed to create config!", 3, Color3.fromRGB(142, 130, 254))
                 end
             end,
             SubCallback = function()
                 if dropdownRef then
                     dropdownRef:SetValues(getList(), selectedConfig)
                 end
-                notify("List refreshed!", 2, Color3.fromRGB(80, 180, 255))
+                notify("List refreshed!", 2, Color3.fromRGB(142, 130, 254))
             end,
         })
 
-        -- Dropdown list config
         dropdownRef = Sections:AddDropdown({
             Title    = "Config list",
             Options  = getList(),
@@ -184,65 +181,62 @@ return function(Nemesis, getConfigFolder, getCURRENT_VERSION, getConfigData, get
             end,
         })
 
-        -- Baris 2: Load | Overwrite
         Sections:AddButton({
             Title    = "Load",
             SubTitle = "Overwrite",
             Callback = function()
                 if not selectedConfig then
-                    notify("Select a config first!", 3, Color3.fromRGB(255, 165, 0))
+                    notify("Select a config first!", 3, Color3.fromRGB(142, 130, 254))
                     return
                 end
                 if loadConfig(selectedConfig) then
                     notify("Loaded '" .. selectedConfig .. "'!", 3, Color3.fromRGB(80, 220, 100))
                 else
-                    notify("Failed to load config!", 3, Color3.fromRGB(255, 80, 80))
+                    notify("Failed to load config!", 3, Color3.fromRGB(142, 130, 254))
                 end
             end,
             SubCallback = function()
                 if not selectedConfig then
-                    notify("Select a config first!", 3, Color3.fromRGB(255, 165, 0))
+                    notify("Select a config first!", 3, Color3.fromRGB(142, 130, 254))
                     return
                 end
                 if saveConfig(selectedConfig) then
-                    notify("Overwritten '" .. selectedConfig .. "'!", 3, Color3.fromRGB(80, 220, 100))
+                    notify("Overwritten '" .. selectedConfig .. "'!", 3, Color3.fromRGB(142, 130, 254))
                 else
-                    notify("Failed to overwrite config!", 3, Color3.fromRGB(255, 80, 80))
+                    notify("Failed to overwrite config!", 3, Color3.fromRGB(142, 130, 254))
                 end
             end,
         })
 
-        -- Baris 3: Set Autoload | Reset Autoload
         Sections:AddButton({
             Title    = "Set Autoload",
             SubTitle = "Reset Autoload",
             Callback = function()
                 if not selectedConfig then
-                    notify("Select a config first!", 3, Color3.fromRGB(255, 165, 0))
+                    notify("Select a config first!", 3, Color3.fromRGB(142, 130, 254))
                     return
                 end
                 setAutoload(selectedConfig)
                 if autoloadLabel then
                     autoloadLabel:SetContent(selectedConfig)
                 end
-                notify("Autoload set to '" .. selectedConfig .. "'!", 3, Color3.fromRGB(80, 220, 100))
+                notify("Autoload set to '" .. selectedConfig .. "'!", 3, Color3.fromRGB(142, 130, 254))
             end,
             SubCallback = function()
                 clearAutoload()
                 if autoloadLabel then
                     autoloadLabel:SetContent("none")
                 end
-                notify("Autoload cleared!", 2, Color3.fromRGB(255, 165, 0))
+                notify("Autoload cleared!", 2, Color3.fromRGB(142, 130, 254))
             end,
         })
 
-        -- Baris 4: Delete (sendiri karena destructive action)
         Sections:AddButton({
             Title    = "Delete",
             SubTitle = "Delete config",
             Callback = function()
                 if not selectedConfig then
-                    notify("Select a config first!", 3, Color3.fromRGB(255, 165, 0))
+                    notify("Select a config first!", 3, Color3.fromRGB(142, 130, 254))
                     return
                 end
                 local name = selectedConfig
@@ -257,26 +251,24 @@ return function(Nemesis, getConfigFolder, getCURRENT_VERSION, getConfigData, get
                     if dropdownRef then
                         dropdownRef:SetValues(getList(), nil)
                     end
-                    notify("Deleted '" .. name .. "'!", 3, Color3.fromRGB(80, 220, 100))
+                    notify("Deleted '" .. name .. "'!", 3, Color3.fromRGB(142, 130, 254))
                 else
-                    notify("Failed to delete config!", 3, Color3.fromRGB(255, 80, 80))
+                    notify("Failed to delete config!", 3, Color3.fromRGB(142, 130, 254))
                 end
             end,
         })
 
-        -- Label autoload
         autoloadLabel = Sections:AddParagraph({
             Title   = "Current autoload",
             Content = currentAutoload ~= "" and currentAutoload or "none",
         })
 
-        -- Auto load saat script dijalankan
         local _autoLoadEnabled = (getAutoLoad == nil) or (type(getAutoLoad) == "function" and getAutoLoad() == true)
         if currentAutoload ~= "" and _autoLoadEnabled then
             task.defer(function()
                 task.wait(0.5)
                 if loadConfig(currentAutoload) then
-                    notify("Auto-loaded: " .. currentAutoload, 3, Color3.fromRGB(80, 220, 100))
+                    notify("Auto-loaded: " .. currentAutoload, 3, Color3.fromRGB(142, 130, 254))
                 end
             end)
         end
