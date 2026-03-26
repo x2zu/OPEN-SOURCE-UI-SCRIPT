@@ -1,3 +1,4 @@
+
 local HttpService = game:GetService("HttpService")
 local Players     = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
@@ -5,14 +6,17 @@ local LocalPlayer = Players.LocalPlayer
 local BASE = "https://raw.githubusercontent.com/x2zu/OPEN-SOURCE-UI-ROBLOX/main/ui-main/ui-main/"
 local function load(path) return loadstring(game:HttpGet(BASE .. path))() end
 
+-- Modules
 local ColorModule    = load("Elements/color.lua")
 local ElementsModule = load("Elements/Elements.lua")
 local KeybindModule  = load("Elements/keybind.lua")
 
+-- Icons
 local defaultIcons = load("Icon/defaulticons.lua")
 local lucideIcons  = load("Icon/lucideIcons.lua")
 local solarIcons   = load("Icon/solarIcons.lua")
 
+-- Merge all icons
 local Icons = {}
 for name, id in pairs(defaultIcons) do
     Icons[name] = id
@@ -40,6 +44,8 @@ local function getIconId(iconName)
     end
     return ""
 end
+
+-- Function to get color from name or direct Color3
 local function getColor(colorInput)
     if typeof(colorInput) == "Color3" then
         return colorInput
@@ -55,6 +61,7 @@ local function getColor(colorInput)
     return ColorModule["Default"] or Color3.fromRGB(0, 208, 255)
 end
 
+-- Variables
 local ConfigFolder = "Nemesis UI"
 local ConfigFile = ""
 local ConfigData = {}
@@ -78,40 +85,26 @@ function LoadConfigFromFile()
         end)
         if success and type(result) == "table" then
             if result._version == CURRENT_VERSION then
-                for k in pairs(ConfigData) do
-                    ConfigData[k] = nil
-                end
-                for k, v in pairs(result) do
-                    ConfigData[k] = v
-                end
-                ConfigData._version = CURRENT_VERSION
+                ConfigData = result
             else
-                for k in pairs(ConfigData) do
-                    ConfigData[k] = nil
-                end
-                ConfigData._version = CURRENT_VERSION
+                ConfigData = { _version = CURRENT_VERSION }
             end
         else
-            for k in pairs(ConfigData) do
-                ConfigData[k] = nil
-            end
-            ConfigData._version = CURRENT_VERSION
+            ConfigData = { _version = CURRENT_VERSION }
         end
     else
-        for k in pairs(ConfigData) do
-            ConfigData[k] = nil
-        end
-        ConfigData._version = CURRENT_VERSION
+        ConfigData = { _version = CURRENT_VERSION }
     end
 end
 
 function LoadConfigElements()
     for key, element in pairs(Elements) do
         if ConfigData[key] ~= nil and element.Set then
-            element:Set(ConfigData[key], false)  
+            element:Set(ConfigData[key], true)
         end
     end
 end
+
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local Mouse = LocalPlayer:GetMouse()
@@ -680,7 +673,7 @@ function Nemesis:Window(GuiConfig)
     
     local GuiFunc = {}
 
-    local Nemesis           = Instance.new("ScreenGui")
+    local NemesisGui           = Instance.new("ScreenGui")
     local DropShadowHolder  = Instance.new("Frame")
     local DropShadow        = Instance.new("ImageLabel")
     local Main              = Instance.new("Frame")
@@ -694,10 +687,10 @@ function Nemesis:Window(GuiConfig)
     local Min               = Instance.new("TextButton")
     local ImageLabel2       = Instance.new("ImageLabel")
 
-    Nemesis.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    Nemesis.Name = "Nemesis"
-    Nemesis.ResetOnSpawn = false
-    Nemesis.Parent = game:GetService("CoreGui")
+    NemesisGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    NemesisGui.Name = "Nemesis"
+    NemesisGui.ResetOnSpawn = false
+    NemesisGui.Parent = game:GetService("CoreGui")
 
     DropShadowHolder.BackgroundTransparency = 1
     DropShadowHolder.BorderSizePixel = 0
@@ -714,11 +707,11 @@ function Nemesis:Window(GuiConfig)
 
     DropShadowHolder.ZIndex = 0
     DropShadowHolder.Name = "DropShadowHolder"
-    DropShadowHolder.Parent = Nemesis
+    DropShadowHolder.Parent = NemesisGui
 
     DropShadowHolder.Position = UDim2.new(
-        0, (Nemesis.AbsoluteSize.X // 2 - DropShadowHolder.Size.X.Offset // 2),
-        0, (Nemesis.AbsoluteSize.Y // 2 - DropShadowHolder.Size.Y.Offset // 2)
+        0, (NemesisGui.AbsoluteSize.X // 2 - DropShadowHolder.Size.X.Offset // 2),
+        0, (NemesisGui.AbsoluteSize.Y // 2 - DropShadowHolder.Size.Y.Offset // 2)
     )
 
     DropShadow.Image = "rbxassetid://6015897843"
@@ -1522,7 +1515,7 @@ function Nemesis:Window(GuiConfig)
 
     function GuiFunc:DestroyGui()
         if CoreGui:FindFirstChild("Nemesis") then
-            Nemesis:Destroy()
+            NemesisGui:Destroy()
         end
     end
 
@@ -1544,7 +1537,7 @@ function Nemesis:Window(GuiConfig)
                 {
                     Name = "Yes",
                     Callback = function()
-                        if Nemesis then Nemesis:Destroy() end
+                        if Nemesis then NemesisGui:Destroy() end
                         if GuiFunc._toggleGui then
                             pcall(function() GuiFunc._toggleGui:Destroy() end)
                             GuiFunc._toggleGui = nil
