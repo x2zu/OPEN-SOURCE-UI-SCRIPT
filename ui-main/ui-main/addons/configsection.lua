@@ -1,4 +1,3 @@
-
 return function(Nemesis, getConfigFolder, getCURRENT_VERSION, getConfigData, getElements, LoadConfigElements, SaveConfig, Nt, getAutoLoad)
 
     local HttpService = game:GetService("HttpService")
@@ -20,12 +19,13 @@ return function(Nemesis, getConfigFolder, getCURRENT_VERSION, getConfigData, get
         elseif type(SectionConfig) == "table" then
             sectionName      = SectionConfig.Name       or "Configuration"
             sectionIcon      = SectionConfig.Icon       or ""
-            customFolderName = SectionConfig.FolderName or nil  
+            customFolderName = SectionConfig.FolderName or nil
         else
             sectionName      = "Configuration"
             sectionIcon      = ""
             customFolderName = nil
         end
+
         if customFolderName and customFolderName ~= "" then
             local sanitized = customFolderName:match("^%s*(.-)%s*$"):gsub("[^%w_%-]", "_")
             if sanitized ~= "" then
@@ -126,16 +126,17 @@ return function(Nemesis, getConfigFolder, getCURRENT_VERSION, getConfigData, get
         end
 
         local Sections = Tab:AddSection({
-            Title  = sectionName,
-            Name   = sectionName,
-            Icon   = sectionIcon,
-            Open   = true,
+            Title = sectionName,
+            Name  = sectionName,
+            Icon  = sectionIcon,
+            Open  = true,
         })
 
         local selectedConfig = nil
         local dropdownRef    = nil
         local autoloadLabel  = nil
 
+        -- Input nama config
         local nameInput = Sections:AddInput({
             Title       = "Config name",
             Placeholder = "Enter config name...",
@@ -144,10 +145,10 @@ return function(Nemesis, getConfigFolder, getCURRENT_VERSION, getConfigData, get
             Callback    = function() end,
         })
 
+        -- Baris 1: Create | Refresh
         Sections:AddButton({
-            Title    = "Create config",
-            Version  = "V2",
-            Icon     = "lucide:file-plus",
+            Title    = "Create",
+            SubTitle = "Refresh",
             Callback = function()
                 local raw  = nameInput and nameInput.Value or ""
                 local name = raw:match("^%s*(.-)%s*$"):gsub("[^%w_%-]", "_")
@@ -164,8 +165,15 @@ return function(Nemesis, getConfigFolder, getCURRENT_VERSION, getConfigData, get
                     notify("Failed to create config!", 3, Color3.fromRGB(255, 80, 80))
                 end
             end,
+            SubCallback = function()
+                if dropdownRef then
+                    dropdownRef:SetValues(getList(), selectedConfig)
+                end
+                notify("List refreshed!", 2, Color3.fromRGB(80, 180, 255))
+            end,
         })
 
+        -- Dropdown list config
         dropdownRef = Sections:AddDropdown({
             Title    = "Config list",
             Options  = getList(),
@@ -176,10 +184,10 @@ return function(Nemesis, getConfigFolder, getCURRENT_VERSION, getConfigData, get
             end,
         })
 
+        -- Baris 2: Load | Overwrite
         Sections:AddButton({
-            Title    = "Load config",
-            Version  = "V2",
-            Icon     = "lucide:folder-open",
+            Title    = "Load",
+            SubTitle = "Overwrite",
             Callback = function()
                 if not selectedConfig then
                     notify("Select a config first!", 3, Color3.fromRGB(255, 165, 0))
@@ -191,13 +199,7 @@ return function(Nemesis, getConfigFolder, getCURRENT_VERSION, getConfigData, get
                     notify("Failed to load config!", 3, Color3.fromRGB(255, 80, 80))
                 end
             end,
-        })
-
-        Sections:AddButton({
-            Title    = "Overwrite config",
-            Version  = "V2",
-            Icon     = "lucide:save",
-            Callback = function()
+            SubCallback = function()
                 if not selectedConfig then
                     notify("Select a config first!", 3, Color3.fromRGB(255, 165, 0))
                     return
@@ -210,10 +212,34 @@ return function(Nemesis, getConfigFolder, getCURRENT_VERSION, getConfigData, get
             end,
         })
 
+        -- Baris 3: Set Autoload | Reset Autoload
         Sections:AddButton({
-            Title    = "Delete config",
-            Version  = "V2",
-            Icon     = "lucide:trash-2",
+            Title    = "Set Autoload",
+            SubTitle = "Reset Autoload",
+            Callback = function()
+                if not selectedConfig then
+                    notify("Select a config first!", 3, Color3.fromRGB(255, 165, 0))
+                    return
+                end
+                setAutoload(selectedConfig)
+                if autoloadLabel then
+                    autoloadLabel:SetContent(selectedConfig)
+                end
+                notify("Autoload set to '" .. selectedConfig .. "'!", 3, Color3.fromRGB(80, 220, 100))
+            end,
+            SubCallback = function()
+                clearAutoload()
+                if autoloadLabel then
+                    autoloadLabel:SetContent("none")
+                end
+                notify("Autoload cleared!", 2, Color3.fromRGB(255, 165, 0))
+            end,
+        })
+
+        -- Baris 4: Delete (sendiri karena destructive action)
+        Sections:AddButton({
+            Title    = "Delete",
+            SubTitle = "Delete config",
             Callback = function()
                 if not selectedConfig then
                     notify("Select a config first!", 3, Color3.fromRGB(255, 165, 0))
@@ -238,53 +264,13 @@ return function(Nemesis, getConfigFolder, getCURRENT_VERSION, getConfigData, get
             end,
         })
 
-        Sections:AddButton({
-            Title    = "Refresh list",
-            Version  = "V2",
-            Icon     = "lucide:refresh-cw",
-            Callback = function()
-                if dropdownRef then
-                    dropdownRef:SetValues(getList(), selectedConfig)
-                end
-                notify("List refreshed!", 2, Color3.fromRGB(80, 180, 255))
-            end,
-        })
-
-        Sections:AddButton({
-            Title    = "Set as autoload",
-            Version  = "V2",
-            Icon     = "lucide:star",
-            Callback = function()
-                if not selectedConfig then
-                    notify("Select a config first!", 3, Color3.fromRGB(255, 165, 0))
-                    return
-                end
-                setAutoload(selectedConfig)
-                if autoloadLabel then
-                    autoloadLabel:SetContent(selectedConfig)
-                end
-                notify("Autoload set to '" .. selectedConfig .. "'!", 3, Color3.fromRGB(80, 220, 100))
-            end,
-        })
-
-        Sections:AddButton({
-            Title    = "Reset autoload",
-            Version  = "V2",
-            Icon     = "lucide:star-off",
-            Callback = function()
-                clearAutoload()
-                if autoloadLabel then
-                    autoloadLabel:SetContent("none")
-                end
-                notify("Autoload cleared!", 2, Color3.fromRGB(255, 165, 0))
-            end,
-        })
-
+        -- Label autoload
         autoloadLabel = Sections:AddParagraph({
-            Title   = "Current autoload config",
+            Title   = "Current autoload",
             Content = currentAutoload ~= "" and currentAutoload or "none",
         })
 
+        -- Auto load saat script dijalankan
         local _autoLoadEnabled = (getAutoLoad == nil) or (type(getAutoLoad) == "function" and getAutoLoad() == true)
         if currentAutoload ~= "" and _autoLoadEnabled then
             task.defer(function()
