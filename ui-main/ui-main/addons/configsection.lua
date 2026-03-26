@@ -1,5 +1,5 @@
 
-return function(Chloex, getConfigFolder, getCURRENT_VERSION, getConfigData, getElements, LoadConfigElements, SaveConfig, Nt, getAutoLoad)
+return function(Nemesis, getConfigFolder, getCURRENT_VERSION, getConfigData, getElements, LoadConfigElements, SaveConfig, Nt, getAutoLoad)
 
     local HttpService = game:GetService("HttpService")
 
@@ -7,7 +7,7 @@ return function(Chloex, getConfigFolder, getCURRENT_VERSION, getConfigData, getE
         Nt(msg, delay, color)
     end
 
-    function Chloex:AddConfigSection(Tab, SectionConfig)
+    function Nemesis:AddConfigSection(Tab, SectionConfig)
         local ConfigFolder    = getConfigFolder()
         local CURRENT_VERSION = getCURRENT_VERSION()
         local ConfigData      = getConfigData()
@@ -20,16 +20,13 @@ return function(Chloex, getConfigFolder, getCURRENT_VERSION, getConfigData, getE
         elseif type(SectionConfig) == "table" then
             sectionName      = SectionConfig.Name       or "Configuration"
             sectionIcon      = SectionConfig.Icon       or ""
-            customFolderName = SectionConfig.FolderName or nil  -- ✅ NEW: custom folder name
+            customFolderName = SectionConfig.FolderName or nil  
         else
             sectionName      = "Configuration"
             sectionIcon      = ""
             customFolderName = nil
         end
-
-        -- ✅ NEW: jika FolderName disediakan, override ConfigFolder base-nya
         if customFolderName and customFolderName ~= "" then
-            -- sanitize: hanya izinkan karakter aman untuk nama folder
             local sanitized = customFolderName:match("^%s*(.-)%s*$"):gsub("[^%w_%-]", "_")
             if sanitized ~= "" then
                 ConfigFolder = sanitized
