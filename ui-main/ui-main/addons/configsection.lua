@@ -140,7 +140,7 @@ return function(Nemesis, getConfigFolder, getCURRENT_VERSION, getConfigData, get
             Title       = "Config name",
             Placeholder = "Enter config name...",
             Default     = "",
-            Flag        = "CHX_ConfigNameInput",
+            Flag        = "NEME_ConfigNameInput",
             Callback    = function() end,
         })
 
@@ -170,7 +170,7 @@ return function(Nemesis, getConfigFolder, getCURRENT_VERSION, getConfigData, get
             Title    = "Config list",
             Options  = getList(),
             Default  = nil,
-            Flag     = "CHX_ConfigListDropdown",
+            Flag     = "NEME_ConfigListDropdown",
             Callback = function(val)
                 selectedConfig = val
             end,
