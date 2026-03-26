@@ -1,8 +1,3 @@
--- // vilarisUi | Elements.lua
--- Upgrade: CreateToggle kini support drag horizontal + scroll guard (Wind UI style)
--- Upgrade: CreateToggle & CreateCheckbox support cfg.Icon di dalam knob/checkbox
--- Fix: Flag wajib ada untuk config save — tanpa Flag element tetap jalan tapi tidak disimpan
-
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local LocalPlayer = game:GetService("Players").LocalPlayer
@@ -32,15 +27,11 @@ function Elements:GetIconId(iconName)
     return GetIconId(iconName)
 end
 
--- ══════════════════════════════════════════════════════════════
--- Flag wajib untuk config save
--- Kalau tidak ada Flag → return nil → skip config read/write/save
--- ══════════════════════════════════════════════════════════════
 local function ResolveKey(cfg)
     if cfg and cfg.Flag and tostring(cfg.Flag) ~= "" then
         return tostring(cfg.Flag)
     end
-    return nil  -- tidak ada Flag = tidak disimpan ke config
+    return nil  
 end
 
 local function ReadConfig(key, default)
