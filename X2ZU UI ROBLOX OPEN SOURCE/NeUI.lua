@@ -18,9 +18,9 @@ if not isfolder("Nemesis/Themes") then
 	makefolder("Nemesis/Themes")
 end
 
-local defaultIcons = load("Icon/defaulticons.lua")
-local lucideIcons  = load("Icon/lucideIcons.lua")
-local solarIcons   = load("Icon/solarIcons.lua")
+local defaultIcons = loadstring(readfile("Icon/defaulticons.lua"))()
+local lucideIcons  = loadstring(readfile("Icon/lucideIcons.lua"))()
+local solarIcons   = loadstring(readfile("Icon/solarIcons.lua"))()
 
 local Library do
 	local Workspace = game:GetService("Workspace")
