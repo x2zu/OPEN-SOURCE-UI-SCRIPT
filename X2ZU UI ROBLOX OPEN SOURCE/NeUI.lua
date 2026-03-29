@@ -2,20 +2,20 @@ if getgenv().Library then
 	getgenv().Library:Unload()
 end
 
-if not isfolder("eclipse") then
-	makefolder("eclipse")
+if not isfolder("Nemesis") then
+	makefolder("Nemesis")
 end
 
-if not isfolder("eclipse/Assets") then
-	makefolder("eclipse/Assets")
+if not isfolder("Nemesis/Assets") then
+	makefolder("Nemesis/Assets")
 end
 
-if not isfolder("eclipse/Configs") then
-	makefolder("eclipse/Configs")
+if not isfolder("Nemesis/Configs") then
+	makefolder("Nemesis/Configs")
 end
 
-if not isfolder("eclipse/Themes") then
-	makefolder("eclipse/Themes")
+if not isfolder("Nemesis/Themes") then
+	makefolder("Nemesis/Themes")
 end
 
 local Library do
@@ -101,10 +101,10 @@ local Library do
 		},
 
 		Folders = {
-			Directory = "eclipse",
-			Configs = "eclipse/Configs",
-			Assets = "eclipse/Assets",
-			Themes = "eclipse/Themes"
+			Directory = "Nemesis",
+			Configs = "Nemesis/Configs",
+			Assets = "Nemesis/Assets",
+			Themes = "Nemesis/Themes"
 		},
 
 		Images = {
@@ -4695,7 +4695,7 @@ local Library do
 		Properties = Properties or { }
 
 		local Window = {
-			Name = Properties.Name or Properties.name or "eclipse",
+			Name = Properties.Name or Properties.name or "Nemesis",
 			Size = Properties.Size or Properties.size or (not IsMobile and UDim2New(0, 770, 0, 526) or UDim2New(0, 526, 0, 350)),
 			FadeSpeed = Properties.FadeSpeed or Properties.fadespeed or 0.25,
 			BackgroundIcon = Properties.BackgroundIcon or Properties.backgroundicon or "rbxassetid://",
