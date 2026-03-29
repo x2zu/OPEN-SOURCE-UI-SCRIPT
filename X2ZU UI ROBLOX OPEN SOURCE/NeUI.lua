@@ -18,6 +18,10 @@ if not isfolder("Nemesis/Themes") then
 	makefolder("Nemesis/Themes")
 end
 
+local defaultIcons = load("Icon/defaulticons.lua")
+local lucideIcons  = load("Icon/lucideIcons.lua")
+local solarIcons   = load("Icon/solarIcons.lua")
+
 local Library do
 	local Workspace = game:GetService("Workspace")
 	local UserInputService = game:GetService("UserInputService")
@@ -2069,7 +2073,7 @@ local Library do
 					BorderColor3 = FromRGB(0, 0, 0),
 					Size = UDim2New(0, 25, 0, 25),
 					AnchorPoint = Vector2New(1, 0.5),
-					Image = "rbxassetid://96215562143920",
+					Image = (lucideIcons and lucideIcons[Page.Icon]) or ("rbxassetid://" .. tostring(Page.Icon)),
 					BackgroundTransparency = 1,
 					Position = UDim2New(1, -1, 0.5, 0),
 					ZIndex = 2,
@@ -4535,17 +4539,18 @@ local Library do
 				PaddingLeft = UDimNew(0, 8)
 			})
 
+-- [MODIFIKASI: Content diturunkan ke bawah Search Bar]
 			Items["Content"] = Instances:Create("Frame", {
-				Parent = Items["KeybindList"].Instance,
+				Parent = Items["MainFrame"].Instance,
 				Name = "\0",
-				BackgroundTransparency = 1,
-				Position = UDim2New(0, 8, 0, 20),
 				BorderColor3 = FromRGB(0, 0, 0),
+				BackgroundTransparency = 1,
+				Position = not IsMobile and UDim2New(0, 225, 0, 55) or UDim2New(0, 163, 0, 55),
+				Size = not IsMobile and UDim2New(1, -233, 1, -63) or UDim2New(1, -171, 1, -63),
+				ZIndex = 2,
 				BorderSizePixel = 0,
-				AutomaticSize = Enum.AutomaticSize.XY,
 				BackgroundColor3 = FromRGB(255, 255, 255)
 			})
-
 			Instances:Create("UIListLayout", {
 				Parent = Items["Content"].Instance,
 				Name = "\0",
@@ -4864,16 +4869,17 @@ local Library do
 				BackgroundColor3 = FromRGB(255, 255, 255)
 			})
 
+-- [MODIFIKASI: Search Bar ditaruh di atas, di luar Content ala Nemesis]
 			Items["Search"] = Instances:Create("Frame", {
-				Parent = Items["Content"].Instance,
+				Parent = Items["MainFrame"].Instance,
 				Name = "\0",
-				Size = UDim2New(1, 0, 0, 35),
+				Size = not IsMobile and UDim2New(1, -233, 0, 35) or UDim2New(1, -171, 0, 35),
+				Position = not IsMobile and UDim2New(0, 225, 0, 10) or UDim2New(0, 163, 0, 10),
 				BorderColor3 = FromRGB(0, 0, 0),
 				ZIndex = 2,
 				BorderSizePixel = 0,
 				BackgroundColor3 = FromRGB(22, 20, 24)
 			})  Items["Search"]:AddToTheme({BackgroundColor3 = "Inline"})
-
 			Instances:Create("UICorner", {
 				Parent = Items["Search"].Instance,
 				Name = "\0",
@@ -5179,6 +5185,22 @@ local Library do
 				BorderSizePixel = 0,
 				BackgroundColor3 = FromRGB(255, 255, 255)
 			})
+-- [TAMBAHAN: Teks Topbar ala Balright yang Responsif]
+			Items["PageName"] = Instances:Create("TextLabel", {
+				Parent = Items["Page"].Instance,
+				Name = "\0",
+				FontFace = Library.Font,
+				TextColor3 = FromRGB(255, 255, 255),
+				BorderColor3 = FromRGB(0, 0, 0),
+				Text = Page.Name,
+				Size = UDim2New(1, -30, 0, 30),
+				BackgroundTransparency = 1,
+				Position = UDim2New(0, 15, 0, 10),
+				TextXAlignment = Enum.TextXAlignment.Left,
+				BorderSizePixel = 0,
+				TextSize = 24,
+				BackgroundColor3 = FromRGB(255, 255, 255)
+			})  Items["PageName"]:AddToTheme({TextColor3 = "Text"})
 			-- [MODIFIKASI: Menambahkan Teks Judul Besar (Topbar) ala Balright]
 Items["PageTitle"] = Instances:Create("TextLabel", {
     Parent = Items["Page"].Instance,
@@ -5429,8 +5451,7 @@ Items["PageTitle"] = Instances:Create("TextLabel", {
                 Items["SectionIcon"] = Instances:Create("ImageLabel", {
                     Parent = Items["Section"].Instance,
                     Name = "Icon",
-                    Image = "rbxassetid://" .. Section.Icon,
-                    Size = UDim2New(0, 14, 0, 14),
+                    Image = (lucideIcons and lucideIcons[Section.Icon]) or (solarIcons and solarIcons[Section.Icon]) or (defaultIcons and defaultIcons[Section.Icon]) or ("rbxassetid://" .. tostring(Section.Icon)),
                     Position = UDim2New(0, 8, 0, 8),
                     BackgroundTransparency = 1,
                     ImageColor3 = FromRGB(180, 180, 185),
