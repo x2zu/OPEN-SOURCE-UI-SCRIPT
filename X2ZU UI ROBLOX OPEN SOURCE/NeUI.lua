@@ -5179,6 +5179,21 @@ local Library do
 				BorderSizePixel = 0,
 				BackgroundColor3 = FromRGB(255, 255, 255)
 			})
+			-- [MODIFIKASI: Menambahkan Teks Judul Besar (Topbar) ala Balright]
+Items["PageTitle"] = Instances:Create("TextLabel", {
+    Parent = Items["Page"].Instance,
+    Name = "PageTitle",
+    FontFace = Library.Font,
+    TextColor3 = FromRGB(255, 255, 255),
+    Text = Page.Name,
+    TextSize = 20, -- Ukuran font besar
+    TextXAlignment = Enum.TextXAlignment.Left,
+    BackgroundTransparency = 1,
+    Position = UDim2New(0, 15, 0, 12),
+    Size = UDim2New(1, -30, 0, 30),
+    BorderSizePixel = 0,
+    ZIndex = 2
+})  Items["PageTitle"]:AddToTheme({TextColor3 = "Text"})
 
 			if not Page.IsKeyPage then
 				Items["Columns"] = Instances:Create("Frame", {
@@ -5186,8 +5201,8 @@ local Library do
 					Name = "\0",
 					BorderColor3 = FromRGB(0, 0, 0),
 					BackgroundTransparency = 1,
-					Position = UDim2New(0, 0, 0, 43),
-					Size = UDim2New(1, 0, 1, -43),
+					Position = UDim2New(0, 0, 0, 55),
+					Size = UDim2New(1, 0, 1, -55),
 					ZIndex = 2,
 					BorderSizePixel = 0,
 					BackgroundColor3 = FromRGB(255, 255, 255)
@@ -5373,10 +5388,11 @@ local Library do
 			Window = self.Window,
 			Page = self,
 
-			Name = Properties.Name or Properties.name or "Section",
-			Side = Properties.Side or Properties.side or 1,
+	Name = Properties.Name or Properties.name or "Section",
+    Side = Properties.Side or Properties.side or 1,
+    Icon = Properties.Icon or Properties.icon, 
 
-			Items = { }
+    Items = { }
 		}
 
 		local Items = { } do
@@ -5408,23 +5424,38 @@ local Library do
 				PaddingBottom = UDimNew(0, 8)
 			})
 
-			Items["Text"] = Instances:Create("TextLabel", {
-				Parent = Items["Section"].Instance,
-				Name = "\0",
-				FontFace = Library.Font,
-				TextColor3 = FromRGB(255, 255, 255),
-				BorderColor3 = FromRGB(0, 0, 0),
-				Text = Section.Name,
-				AutomaticSize = Enum.AutomaticSize.X,
-				Size = UDim2New(0, 0, 0, 15),
-				BackgroundTransparency = 1,
-				Position = UDim2New(0, 8, 0, 8),
-				BorderSizePixel = 0,
-				ZIndex = 2,
-				TextSize = 14,
-				BackgroundColor3 = FromRGB(255, 255, 255)
-			})  Items["Text"]:AddToTheme({TextColor3 = "Text"})
+-- [MODIFIKASI: Menambahkan Icon di Section ala Balright]
+            if Section.Icon then
+                Items["SectionIcon"] = Instances:Create("ImageLabel", {
+                    Parent = Items["Section"].Instance,
+                    Name = "Icon",
+                    Image = "rbxassetid://" .. Section.Icon,
+                    Size = UDim2New(0, 14, 0, 14),
+                    Position = UDim2New(0, 8, 0, 8),
+                    BackgroundTransparency = 1,
+                    ImageColor3 = FromRGB(180, 180, 185),
+                    ZIndex = 2
+                })  Items["SectionIcon"]:AddToTheme({ImageColor3 = "Inactive Text"})
+            end
 
+            Items["Text"] = Instances:Create("TextLabel", {
+                Parent = Items["Section"].Instance,
+                Name = "\0",
+                FontFace = Library.Font,
+                TextColor3 = FromRGB(255, 255, 255),
+                BorderColor3 = FromRGB(0, 0, 0),
+                Text = Section.Name,
+                AutomaticSize = Enum.AutomaticSize.X,
+                Size = UDim2New(0, 0, 0, 15),
+                BackgroundTransparency = 1,
+                -- [MODIFIKASI]: Jika ada icon, teks geser ke kanan (28), jika tidak tetap (8)
+                Position = UDim2New(0, Section.Icon and 28 or 8, 0, 8),
+                BorderSizePixel = 0,
+                ZIndex = 2,
+                TextSize = 14,
+                BackgroundColor3 = FromRGB(255, 255, 255)
+            })  Items["Text"]:AddToTheme({TextColor3 = "Text"})
+			
 			Instances:Create("Frame", {
 				Parent = Items["Section"].Instance,
 				Name = "\0",
