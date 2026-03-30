@@ -11,7 +11,6 @@ Terrain = workspace:FindFirstChildOfClass("Terrain")
 local VoraLib = {}
 local Connections = {}
 
-
 function MakeDraggable(topbarobject, object)
 	local Dragging = nil
 	local DragInput = nil
@@ -62,16 +61,16 @@ function Create(className, properties)
 	return instance
 end
 
-
+-- [ TEMA PERIWINKLE PURPLE & DARK MODE ]
 local Theme = {
-	Background = Color3.fromRGB(10, 12, 25), 
-	Sidebar = Color3.fromRGB(15, 18, 32),
-	ElementBackground = Color3.fromRGB(25, 30, 50),
+	Background = Color3.fromRGB(12, 12, 12), 
+	Sidebar = Color3.fromRGB(16, 16, 18),
+	ElementBackground = Color3.fromRGB(22, 22, 24),
 	TextColor = Color3.fromRGB(255, 255, 255), 
-	TextSecondary = Color3.fromRGB(180, 200, 230), 
-	Accent = Color3.fromRGB(0, 140, 210), 
-	Hover = Color3.fromRGB(35, 45, 70),
-	Outline = Color3.fromRGB(40, 60, 90)
+	TextSecondary = Color3.fromRGB(150, 150, 150), 
+	Accent = Color3.fromRGB(142, 130, 254), 
+	Hover = Color3.fromRGB(30, 30, 32),
+	Outline = Color3.fromRGB(35, 35, 38)
 }
 
 local Icons = {
@@ -112,8 +111,6 @@ local Icons = {
     bell      = "rbxassetid://73186275216515",
 }
 
-
-
 VoraLib.Icons = Icons
 
 function VoraLib:CreateWindow(options)
@@ -121,7 +118,6 @@ function VoraLib:CreateWindow(options)
 	options = options or {}
 	local TitleName = options.Name or "VoraHub"
 	local IntroEnabled = options.Intro or false
-	
 	
 	local function GetParent()
 		local Success, Parent = pcall(function()
@@ -163,7 +159,6 @@ function VoraLib:CreateWindow(options)
 		Parent = MainFrame
 	})
 	
-	
 	local MainStroke = Create("UIStroke", {
 		Transparency = 0,
 		Thickness = 1,
@@ -171,21 +166,19 @@ function VoraLib:CreateWindow(options)
 		Parent = MainFrame
 	})
 
-	-- Background Pattern (Hexagons/Dots)
 	local Pattern = Create("ImageLabel", {
 		Name = "Pattern",
 		Parent = MainFrame,
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 0),
 		Size = UDim2.new(1, 0, 1, 0),
-		Image = "rbxassetid://2151741365", -- Subtle texture
+		Image = "rbxassetid://2151741365",
 		ImageTransparency = 0.95,
 		TileSize = UDim2.new(0, 20, 0, 20),
 		ScaleType = Enum.ScaleType.Tile,
 		ZIndex = 1
 	})
 
-	-- Premium Shadow
 	local Shadow = Create("ImageLabel", {
 		Name = "Shadow",
 		Parent = ScreenGui,
@@ -201,7 +194,6 @@ function VoraLib:CreateWindow(options)
 		SliceScale = 1
 	})
 	
-	-- Sync Shadow Size/Pos
 	MainFrame:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
 		Shadow.Size = UDim2.new(0, MainFrame.AbsoluteSize.X + 34, 0, MainFrame.AbsoluteSize.Y + 34)
 	end)
@@ -209,7 +201,6 @@ function VoraLib:CreateWindow(options)
 		Shadow.Position = UDim2.new(0, MainFrame.AbsolutePosition.X - 17, 0, MainFrame.AbsolutePosition.Y - 17)
 	end)
 
-	-- Resize Handle (Clean Grip Lines)
 	local ResizeHandle = Create("TextButton", {
 		Name = "ResizeHandle",
 		Parent = MainFrame,
@@ -223,32 +214,6 @@ function VoraLib:CreateWindow(options)
 	})
 
 	local ResizeLines = {}
-	for i = 1, 3 do
-		-- Line 1 (smallest) -> Line 3 (largest)
-		-- Or Line 1 (Largest) -> Line 3 (Smallest) ?
-		-- Let's do Standard Grip: Bottom-Right is smallest? No, usually parallel diagonal lines increasing in length.
-		-- Line 1: x, y (closest to corner)
-		
-		local Offset = i * 4
-		local Line = Create("Frame", {
-			Parent = ResizeHandle,
-			BackgroundColor3 = Theme.TextSecondary,
-			BorderSizePixel = 0,
-			Rotation = -45,
-			Size = UDim2.new(0, 2 + (i * 5), 0, 2), -- Increasing size
-			Position = UDim2.new(1, 0, 1, -Offset),   -- Moving up/left
-			AnchorPoint = Vector2.new(1, 1),
-			ZIndex = 101
-		})
-		
-		-- Adjust position to form a triangle shape at the corner
-		-- Actually simpler logic:
-		-- The lines are usually at 45 deg.
-		-- Let's just hardcode 3 nice lines.
-		Line:Destroy() 
-	end
-	
-	-- Re-doing loop for perfect placement
 	local LineConfigs = {
 		{Size = UDim2.new(0, 6,  0, 2), Pos = UDim2.new(1, -2, 1, -2)},
 		{Size = UDim2.new(0, 10, 0, 2), Pos = UDim2.new(1, -2, 1, -6)},
@@ -270,7 +235,6 @@ function VoraLib:CreateWindow(options)
 		table.insert(ResizeLines, Line)
 	end
 
-	-- Hover Animation
 	ResizeHandle.MouseEnter:Connect(function()
 		for _, line in ipairs(ResizeLines) do
 			TweenService:Create(line, TweenInfo.new(0.2), {BackgroundColor3 = Theme.Accent}):Play()
@@ -324,7 +288,6 @@ function VoraLib:CreateWindow(options)
 		Parent = Header
 	})
 	
-	
 	Create("Frame", {
 		Name = "BottomFiller",
 		Parent = Header,
@@ -335,7 +298,6 @@ function VoraLib:CreateWindow(options)
 		ZIndex = 1
 	})
 	
-	
 	Create("Frame", {
 		Parent = Header,
 		BackgroundColor3 = Theme.Outline,
@@ -345,7 +307,6 @@ function VoraLib:CreateWindow(options)
 		ZIndex = 2
 	})
 
-	
 	local Logo = Create("ImageLabel", {
 		Name = "Logo",
 		Parent = Header,
@@ -357,7 +318,6 @@ function VoraLib:CreateWindow(options)
 		ZIndex = 2
 	})
 
-	
 	local TitleLabel = Create("TextLabel", {
 		Name = "Title",
 		Parent = Header,
@@ -372,7 +332,6 @@ function VoraLib:CreateWindow(options)
 		ZIndex = 2
 	})
 	
-	
 	if IntroEnabled then
 		local StartSize = MainFrame.Size
 		MainFrame.Size = UDim2.new(0, 0, 0, 0)
@@ -384,17 +343,15 @@ function VoraLib:CreateWindow(options)
 		}):Play()
 	end
 	
-	
 	local Sidebar = Create("Frame", {
 		Name = "Sidebar",
 		Parent = MainFrame,
 		BackgroundColor3 = Theme.Sidebar,
-		BackgroundTransparency = 1,
+		BackgroundTransparency = 0, 
 		BorderSizePixel = 0,
 		Position = UDim2.new(0, 0, 0, 38),
 		Size = UDim2.new(0, 160, 1, -38)
 	})
-	
 	
 	Create("Frame", {
 		Name = "Separator",
@@ -406,7 +363,6 @@ function VoraLib:CreateWindow(options)
 		Size = UDim2.new(0, 2, 1, 0)
 	})
 
-	
 	local Controls = Create("Frame", {
 		Name = "Controls",
 		Parent = Header,
@@ -439,8 +395,8 @@ function VoraLib:CreateWindow(options)
 		Position = UDim2.new(0.1, 0, 0.1, 0),
 		Size = UDim2.new(0, 50, 0, 50),
 		Image = "rbxassetid://127876061340518", 
-		ImageColor3 = Theme.TextColor,
-		Visible = true, 
+		ImageColor3 = Theme.Accent,
+		Visible = IsMobile, 
 		Active = true,
 		Draggable = true,
 		ZIndex = 100
@@ -461,7 +417,6 @@ function VoraLib:CreateWindow(options)
 		IsMinimized = not IsMinimized
 		
 		if IsMinimized then
-			-- Close Animation
 			local CloseTween = TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
 				Size = UDim2.new(0, 0, 0, 0)
 			})
@@ -474,7 +429,6 @@ function VoraLib:CreateWindow(options)
 				end
 			end)
 		else
-			-- Open Animation
 			MainFrame.Visible = true
 			if Shadow then Shadow.Visible = true end
 
@@ -489,14 +443,12 @@ function VoraLib:CreateWindow(options)
 	
 	ToggleButton.MouseButton1Click:Connect(ToggleUI)
 	
-	-- Add keyboard shortcut
 	local ToggleKey = Enum.KeyCode.RightControl
 	table.insert(Connections, UserInputService.InputBegan:Connect(function(input, gameProcessed)
 		if not gameProcessed and input.KeyCode == ToggleKey then
 			ToggleUI()
 		end
 	end))
-
 
 	local function CreateControlButton(name, icon, layoutOrder, callback)
 		local Button = Create("ImageButton", {
@@ -524,7 +476,6 @@ function VoraLib:CreateWindow(options)
 
 	CreateControlButton("Minimize", "71686683787518", 1, ToggleUI)
 
-	
 	local Window = {
 		Tabs = {},
 		Elements = {},
@@ -532,9 +483,6 @@ function VoraLib:CreateWindow(options)
 		Flags = {}
 	}
 
-
-
-	
 	local NotificationHolder = Create("Frame", {
 		Name = "NotificationHolder",
 		Parent = ScreenGui,
@@ -615,10 +563,8 @@ function VoraLib:CreateWindow(options)
 			TextWrapped = true
 		})
 		
-		
 		NotifyFrame.Position = UDim2.new(1, 320, 0, 0)
 		TweenService:Create(NotifyFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Position = UDim2.new(0, 0, 0, 0)}):Play()
-		
 		
 		local ProgressBar = Create("Frame", {
 			Parent = NotifyFrame,
@@ -636,7 +582,6 @@ function VoraLib:CreateWindow(options)
 			NotifyFrame:Destroy()
 		end)
 	end
-
 	
 	local Maximized = false
 	local DefaultSize = IsMobile and UDim2.new(0, 500, 0, 320) or UDim2.new(0, 700, 0, 450)
@@ -668,12 +613,10 @@ function VoraLib:CreateWindow(options)
 		Window:Destroy()
 	end)
 	
-	-- Toggle UI Button & Logic
 	local MainFrameVisible = true
-	local function ToggleUI()
+	local function ToggleUI_Internal()
 		MainFrameVisible = not MainFrameVisible
 		if MainFrameVisible then
-			-- OPEN: Restore to Default Size/Pos (or Max if was Max? simplified to Default for now)
 			MainFrame.Visible = true
 			if Shadow then Shadow.Visible = true end
 			
@@ -689,7 +632,6 @@ function VoraLib:CreateWindow(options)
 				}):Play()
 			end
 		else
-			-- CLOSE: Shrink and Fade
 			if Shadow then
 				TweenService:Create(Shadow, TweenInfo.new(0.4), {ImageTransparency = 1, Size = UDim2.new(0, 0, 0, 0)}):Play()
 			end
@@ -710,9 +652,6 @@ function VoraLib:CreateWindow(options)
 		end
 	end
 
-
-
-	
 	local TabContainer = Create("ScrollingFrame", {
 		Name = "TabContainer",
 		Parent = Sidebar,
@@ -724,8 +663,7 @@ function VoraLib:CreateWindow(options)
 		Size = UDim2.new(1, 0, 1, -25),
 		CanvasSize = UDim2.new(0, 0, 0, 0),
 		AutomaticCanvasSize = Enum.AutomaticSize.Y,
-		ScrollBarThickness = 2,
-		ScrollBarImageColor3 = Theme.Accent
+		ScrollBarThickness = 0
 	})
 	
 	local ButtonsHolder = Create("Frame", {
@@ -763,7 +701,6 @@ function VoraLib:CreateWindow(options)
 		CornerRadius = UDim.new(1, 0),
 		Parent = SlidingIndicator
 	})
-
 	
 	local ContentContainer = Create("Frame", {
 		Name = "ContentContainer",
@@ -775,7 +712,6 @@ function VoraLib:CreateWindow(options)
 
 	MakeDraggable(Header, MainFrame)
 	
-	-- Shared Dropdown Components (Trix Style Integration)
 	local DropdownLayoutOrder = 0
 	
 	local MoreBlur = Create("Frame", {
@@ -805,9 +741,9 @@ function VoraLib:CreateWindow(options)
 		AnchorPoint = Vector2.new(1, 0.5),
 		BackgroundColor3 = Theme.Sidebar,
 		BorderSizePixel = 0,
-		Position = UDim2.new(1, 182, 0.5, 0), -- Start off-screen (right)
+		Position = UDim2.new(1, 182, 0.5, 0), 
 		Size = UDim2.new(0, 180, 1, -20),
-		ClipsDescendants = false, -- Allow shadow/stroke
+		ClipsDescendants = false, 
 		Active = true,
 		ZIndex = 2005
 	})
@@ -815,7 +751,6 @@ function VoraLib:CreateWindow(options)
 	Create("UICorner", { CornerRadius = UDim.new(0, 6), Parent = DropdownSelect })
 	Create("UIStroke", { Color = Theme.Accent, Thickness = 1, Transparency = 0.5, Parent = DropdownSelect })
 	
-	-- Dropdown Shadow
 	Create("ImageLabel", {
 		Parent = DropdownSelect,
 		BackgroundTransparency = 1,
@@ -845,9 +780,9 @@ function VoraLib:CreateWindow(options)
 	DropPageLayout.SortOrder = Enum.SortOrder.LayoutOrder
 	DropPageLayout.EasingStyle = Enum.EasingStyle.Quint
 	DropPageLayout.EasingDirection = Enum.EasingDirection.Out
-	DropPageLayout.TweenTime = 0.0 -- Instant switch to avoid seeing other dropdowns
+	DropPageLayout.TweenTime = 0.0 
 	DropPageLayout.FillDirection = Enum.FillDirection.Vertical
-    DropPageLayout.ScrollWheelInputEnabled = false -- Disable scrolling pages with wheel
+    DropPageLayout.ScrollWheelInputEnabled = false 
 	
 	ConnectButton.Activated:Connect(function()
 		if MoreBlur.Visible then
@@ -858,7 +793,15 @@ function VoraLib:CreateWindow(options)
 		end
 	end)
 	
-
+	-- [ FUNGSI TAMBAHAN: SEPARATOR TAB ]
+	function Window:CreateSidebarSeparator(name)
+        local Sep = Create("TextLabel", {
+            Parent = ButtonsHolder, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 24),
+            Font = Enum.Font.GothamBold, Text = string.upper(name), TextColor3 = Theme.TextSecondary,
+            TextSize = 11, TextXAlignment = Enum.TextXAlignment.Left, TextTransparency = 0.3
+        })
+        Create("UIPadding", {Parent = Sep, PaddingLeft = UDim.new(0, 10)})
+    end
 
 	function Window:CreateTab(options)
 		options = options or {}
@@ -873,7 +816,7 @@ function VoraLib:CreateWindow(options)
 		local TabButton = Create("TextButton", {
 			Name = TabName .. "Button",
 			Parent = ButtonsHolder,
-			BackgroundColor3 = Theme.ElementBackground,
+			BackgroundColor3 = Theme.Hover,
 			BackgroundTransparency = 1,
 			BorderSizePixel = 0,
 			Size = UDim2.new(1, 0, 0, 36),
@@ -884,13 +827,6 @@ function VoraLib:CreateWindow(options)
 		
 		Create("UICorner", {
 			CornerRadius = UDim.new(0, 6),
-			Parent = TabButton
-		})
-		
-		Create("UIStroke", {
-			Color = Theme.Outline,
-			Transparency = 0.8,
-			Thickness = 1,
 			Parent = TabButton
 		})
 		
@@ -914,13 +850,13 @@ function VoraLib:CreateWindow(options)
 			Font = Enum.Font.GothamMedium,
 			Text = TabName,
 			TextColor3 = Theme.TextSecondary,
-			TextSize = 14,
+			TextSize = 13,
 			TextXAlignment = Enum.TextXAlignment.Left
 		})
 		
 		TabButton.MouseEnter:Connect(function()
 			if not Tab.Active then
-				TweenService:Create(TabButton, TweenInfo.new(0.2), {BackgroundTransparency = 0.9}):Play()
+				TweenService:Create(TabButton, TweenInfo.new(0.2), {BackgroundTransparency = 0.5}):Play()
 				TweenService:Create(TabLabel, TweenInfo.new(0.2), {TextColor3 = Theme.TextColor}):Play()
 				if IconImage then
 					TweenService:Create(IconImage, TweenInfo.new(0.2), {ImageColor3 = Theme.TextColor}):Play()
@@ -966,7 +902,6 @@ function VoraLib:CreateWindow(options)
 			PaddingRight = UDim.new(0, 10)
 		})
 
-		-- Tab Title Header inside Page
 		Create("TextLabel", {
 			Name = "TabTitle",
 			Parent = TabPage,
@@ -975,7 +910,7 @@ function VoraLib:CreateWindow(options)
 			Font = Enum.Font.GothamBold,
 			Text = TabName,
 			TextColor3 = Theme.TextColor,
-			TextSize = 26,
+			TextSize = 24,
 			TextXAlignment = Enum.TextXAlignment.Left,
 			LayoutOrder = -1
 		})
@@ -994,7 +929,7 @@ function VoraLib:CreateWindow(options)
 			end
 			
 			Tab.Active = true
-			TweenService:Create(TabButton, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundTransparency = 0.85}):Play()
+			TweenService:Create(TabButton, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundTransparency = 0}):Play()
 			TweenService:Create(TabLabel, TweenInfo.new(0.3), {TextColor3 = Theme.Accent}):Play() 
 			if IconImage then
 				TweenService:Create(IconImage, TweenInfo.new(0.3), {ImageColor3 = Theme.Accent}):Play()
@@ -1017,7 +952,6 @@ function VoraLib:CreateWindow(options)
 		end
 
 		TabButton.MouseButton1Click:Connect(function()
-			
 			task.spawn(function()
 				local Mouse = Players.LocalPlayer:GetMouse()
 				local Ripple = Create("Frame", {
@@ -1030,10 +964,7 @@ function VoraLib:CreateWindow(options)
 					ZIndex = 1
 				})
 				
-				Create("UICorner", {
-					CornerRadius = UDim.new(1, 0),
-					Parent = Ripple
-				})
+				Create("UICorner", { CornerRadius = UDim.new(1, 0), Parent = Ripple })
 
 				local Tween = TweenService:Create(Ripple, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
 					Size = UDim2.new(0, 150, 0, 150),
@@ -1063,8 +994,6 @@ function VoraLib:CreateWindow(options)
 			TabPage.CanvasSize = UDim2.new(0, 0, 0, TabPage.UIListLayout.AbsoluteContentSize.Y + 20)
 		end)
 
-		
-		
 		function Tab:CreateSection(options)
 			options = options or {}
 			local SectionName = options.Name or "Section"
@@ -1073,15 +1002,14 @@ function VoraLib:CreateWindow(options)
 				Name = "SectionContainer",
 				Parent = TabPage,
 				BackgroundTransparency = 1,
-				Size = UDim2.new(1, 0, 0, 32), -- Default height matches header only
-				-- AutomaticSize = Enum.AutomaticSize.Y -- DISABLED: We will control this manually
+				Size = UDim2.new(1, 0, 0, 32), 
 			})
 
 			local SectionHeader = Create("TextButton", {
 				Name = "SectionHeader",
 				Parent = SectionContainer,
 				BackgroundColor3 = Theme.ElementBackground, 
-				BackgroundTransparency = 0.5,
+				BackgroundTransparency = 0.2,
 				Size = UDim2.new(1, 0, 0, 32),
 				AutoButtonColor = false,
 				Text = ""
@@ -1089,10 +1017,9 @@ function VoraLib:CreateWindow(options)
 			
 			Create("UICorner", { CornerRadius = UDim.new(0, 6), Parent = SectionHeader })
 			
-            -- Header Gradient/Stroke (Optional beautification)
 			local HeaderStroke = Create("UIStroke", {
 				Color = Theme.Outline,
-				Transparency = 0.6,
+				Transparency = 0.5,
 				Thickness = 1,
 				Parent = SectionHeader
 			})
@@ -1116,18 +1043,17 @@ function VoraLib:CreateWindow(options)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, -26, 0.5, -8),
 				Size = UDim2.new(0, 16, 0, 16),
-				Image = "rbxassetid://6031091004", -- Arrow
+				Image = "rbxassetid://6031091004", 
 				ImageColor3 = Theme.TextSecondary,
-				Rotation = -90 -- Closed by default
+				Rotation = -90 
 			})
 
 			local ContentFrame = Create("Frame", {
 				Name = "SectionContent",
 				Parent = SectionContainer,
 				BackgroundTransparency = 1,
-				Position = UDim2.new(0, 0, 0, 36), -- Below header
+				Position = UDim2.new(0, 0, 0, 36),
 				Size = UDim2.new(1, 0, 0, 0),
-				-- AutomaticSize = Enum.AutomaticSize.Y, -- DISABLED: Interfere with manual resizing/collapse
 				ClipsDescendants = true,
 				Visible = true 
 			})
@@ -1146,18 +1072,13 @@ function VoraLib:CreateWindow(options)
 				PaddingRight = UDim.new(0, 5)
 			})
 
-			-- Toggle Logic
 			local Open = false
 			local CanvasSizeConnection
 
-			-- Initial State
-			ContentFrame.Size = UDim2.new(1, 0, 0, 0)
-			
-            -- Helper to get real content height
             local function GetContentHeight()
                 local layout = ContentFrame:FindFirstChildOfClass("UIListLayout")
                 if layout then
-                    return layout.AbsoluteContentSize.Y + 10 -- padding
+                    return layout.AbsoluteContentSize.Y + 10 
                 end
                 return 0
             end
@@ -1165,24 +1086,20 @@ function VoraLib:CreateWindow(options)
 			SectionHeader.MouseButton1Click:Connect(function()
 				Open = not Open
 				if Open then
-                     -- Expand
 					TweenService:Create(Chevron, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {Rotation = 0}):Play()
-                    TweenService:Create(SectionHeader, TweenInfo.new(0.2), {BackgroundColor3 = Theme.Accent, BackgroundTransparency = 0.8}):Play()
+                    TweenService:Create(SectionHeader, TweenInfo.new(0.2), {BackgroundColor3 = Theme.Accent, BackgroundTransparency = 0.5}):Play()
                     
                     local contentHeight = GetContentHeight()
-                    local totalHeight = contentHeight + 40 -- Content + Header + Spacing
+                    local totalHeight = contentHeight + 40 
                     
                     TweenService:Create(ContentFrame, TweenInfo.new(0.35, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {
                         Size = UDim2.new(1, 0, 0, contentHeight)
                     }):Play()
                     
-                    -- Also animate the CONTAINER size so the list below moves
                     TweenService:Create(SectionContainer, TweenInfo.new(0.35, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {
                         Size = UDim2.new(1, 0, 0, totalHeight)
                     }):Play()
 
-                    
-                    -- Update automatically if content changes size while open
                     if not CanvasSizeConnection then
                          local layout = ContentFrame:FindFirstChildOfClass("UIListLayout")
                          if layout then
@@ -1197,15 +1114,13 @@ function VoraLib:CreateWindow(options)
                          end
                     end
 				else
-                    -- Collapse
 					TweenService:Create(Chevron, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {Rotation = -90}):Play()
-                    TweenService:Create(SectionHeader, TweenInfo.new(0.2), {BackgroundColor3 = Theme.ElementBackground, BackgroundTransparency = 0.5}):Play()
+                    TweenService:Create(SectionHeader, TweenInfo.new(0.2), {BackgroundColor3 = Theme.ElementBackground, BackgroundTransparency = 0.2}):Play()
                     
                     TweenService:Create(ContentFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {
                         Size = UDim2.new(1, 0, 0, 0)
                     }):Play()
                     
-                    -- Shrink container back to just Header height
                     TweenService:Create(SectionContainer, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {
                         Size = UDim2.new(1, 0, 0, 32)
                     }):Play()
@@ -1217,19 +1132,17 @@ function VoraLib:CreateWindow(options)
 				end
 			end)
             
-            -- Hover Effect
             SectionHeader.MouseEnter:Connect(function()
                 if not Open then
-                    TweenService:Create(SectionHeader, TweenInfo.new(0.2), {BackgroundTransparency = 0.3}):Play()
+                    TweenService:Create(SectionHeader, TweenInfo.new(0.2), {BackgroundTransparency = 0}):Play()
                 end
             end)
             SectionHeader.MouseLeave:Connect(function()
                 if not Open then
-                    TweenService:Create(SectionHeader, TweenInfo.new(0.2), {BackgroundTransparency = 0.5}):Play()
+                    TweenService:Create(SectionHeader, TweenInfo.new(0.2), {BackgroundTransparency = 0.2}):Play()
                 end
             end)
 			
-			-- Register as current section
 			Tab.CurrentSectionContainer = ContentFrame
 		end
 
@@ -1248,17 +1161,8 @@ function VoraLib:CreateWindow(options)
                 AutomaticSize = Enum.AutomaticSize.Y
             })
             
-            Create("UICorner", {
-                CornerRadius = UDim.new(0, 6),
-                Parent = ParagraphFrame
-            })
-            
-            Create("UIStroke", {
-                Color = Theme.Outline,
-                Transparency = 0.6,
-                Thickness = 1,
-                Parent = ParagraphFrame
-            })
+            Create("UICorner", { CornerRadius = UDim.new(0, 6), Parent = ParagraphFrame })
+            Create("UIStroke", { Color = Theme.Outline, Transparency = 0.5, Thickness = 1, Parent = ParagraphFrame })
             
             local TitleLabel = Create("TextLabel", {
                 Parent = ParagraphFrame,
@@ -1267,7 +1171,7 @@ function VoraLib:CreateWindow(options)
                 Size = UDim2.new(1, -24, 0, 20),
                 Font = Enum.Font.GothamBold,
                 Text = Title,
-                TextColor3 = Theme.TextColor,
+                TextColor3 = Theme.Accent,
                 TextSize = 14,
                 TextXAlignment = Enum.TextXAlignment.Left
             })
@@ -1287,15 +1191,9 @@ function VoraLib:CreateWindow(options)
                 RichText = true
             })
             
-            Create("UIPadding", {
-                Parent = ParagraphFrame,
-                PaddingBottom = UDim.new(0, 12)
-            })
+            Create("UIPadding", { Parent = ParagraphFrame, PaddingBottom = UDim.new(0, 12) })
             
-            local ParagraphObject = {
-                Title = Title,
-                Desc = Content
-            }
+            local ParagraphObject = { Title = Title, Desc = Content }
             
             function ParagraphObject:SetTitle(newTitle)
                 self.Title = newTitle
@@ -1307,13 +1205,8 @@ function VoraLib:CreateWindow(options)
                 ContentLabel.Text = newDesc
             end
             
-            function ParagraphObject:GetTitle()
-                return self.Title
-            end
-            
-            function ParagraphObject:GetDesc()
-                return self.Desc
-            end
+            function ParagraphObject:GetTitle() return self.Title end
+            function ParagraphObject:GetDesc() return self.Desc end
             
             return ParagraphObject
         end
@@ -1363,17 +1256,8 @@ function VoraLib:CreateWindow(options)
 				ClipsDescendants = true
 			})
 			
-			Create("UICorner", {
-				CornerRadius = UDim.new(0, 6),
-				Parent = ButtonFrame
-			})
-			
-			local ButtonStroke = Create("UIStroke", {
-				Color = Theme.Outline,
-				Transparency = 0.5,
-				Thickness = 1,
-				Parent = ButtonFrame
-			})
+			Create("UICorner", { CornerRadius = UDim.new(0, 6), Parent = ButtonFrame })
+			local ButtonStroke = Create("UIStroke", { Color = Theme.Outline, Transparency = 0.5, Thickness = 1, Parent = ButtonFrame })
 			
 			local Button = Create("TextButton", {
 				Name = "Button",
@@ -1427,7 +1311,7 @@ function VoraLib:CreateWindow(options)
 			end
 			
 			Button.MouseEnter:Connect(function()
-				TweenService:Create(ButtonFrame, TweenInfo.new(0.2), {BackgroundColor3 = Theme.Hover, BackgroundTransparency = 0.1}):Play()
+				TweenService:Create(ButtonFrame, TweenInfo.new(0.2), {BackgroundColor3 = Theme.Hover, BackgroundTransparency = 0}):Play()
 				TweenService:Create(ButtonStroke, TweenInfo.new(0.2), {Color = Theme.Accent, Transparency = 0.2}):Play()
 			end)
 			
@@ -1437,7 +1321,6 @@ function VoraLib:CreateWindow(options)
 			end)
 			
 			Button.MouseButton1Click:Connect(function()
-				
 				task.spawn(function()
 					local Mouse = Players.LocalPlayer:GetMouse()
 					local Ripple = Create("Frame", {
@@ -1450,10 +1333,7 @@ function VoraLib:CreateWindow(options)
 						ZIndex = 1
 					})
 					
-					Create("UICorner", {
-						CornerRadius = UDim.new(1, 0),
-						Parent = Ripple
-					})
+					Create("UICorner", { CornerRadius = UDim.new(1, 0), Parent = Ripple })
 
 					local Tween = TweenService:Create(Ripple, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
 						Size = UDim2.new(0, 200, 0, 200),
@@ -1468,20 +1348,19 @@ function VoraLib:CreateWindow(options)
 
 				TweenService:Create(ButtonFrame, TweenInfo.new(0.1), {BackgroundColor3 = Theme.Accent, BackgroundTransparency = 0}):Play()
 				task.wait(0.1)
-				TweenService:Create(ButtonFrame, TweenInfo.new(0.3), {BackgroundColor3 = Theme.Hover, BackgroundTransparency = 0.1}):Play()
+				TweenService:Create(ButtonFrame, TweenInfo.new(0.3), {BackgroundColor3 = Theme.Hover, BackgroundTransparency = 0}):Play()
 				Callback()
 			end)
 		end
+
         function Tab:CreateToggle(options)
             options = options or {}
             local ToggleName = options.Name or "Toggle"
             local SubText = options.SubText
-            -- Support both 'Default' and 'Value' for backward compatibility
             local Default = options.Default or options.Value or false
             local Values = options.Values or {}
             local Callback = options.Callback or function() end
 
-            
             local Toggled = Default
             
             local ToggleFrame = Create("Frame", {
@@ -1493,17 +1372,8 @@ function VoraLib:CreateWindow(options)
                 Size = UDim2.new(1, 0, 0, SubText and 50 or 38)
             })
             
-            Create("UICorner", {
-                CornerRadius = UDim.new(0, 6),
-                Parent = ToggleFrame
-            })
-            
-            Create("UIStroke", {
-                Color = Theme.Outline,
-                Transparency = 0.5,
-                Thickness = 1,
-                Parent = ToggleFrame
-            })
+            Create("UICorner", { CornerRadius = UDim.new(0, 6), Parent = ToggleFrame })
+            Create("UIStroke", { Color = Theme.Outline, Transparency = 0.5, Thickness = 1, Parent = ToggleFrame })
             
             local Label = Create("TextLabel", {
                 Parent = ToggleFrame,
@@ -1536,15 +1406,11 @@ function VoraLib:CreateWindow(options)
             local SwitchBg = Create("Frame", {
                 Parent = ToggleFrame,
                 AnchorPoint = Vector2.new(1, 0.5),
-                BackgroundColor3 = Toggled and Theme.Accent or Color3.fromRGB(45, 45, 50),
+                BackgroundColor3 = Toggled and Theme.Accent or Theme.Background,
                 Position = UDim2.new(1, -12, 0.5, 0),
                 Size = UDim2.new(0, 42, 0, 22)
             })
-            
-            Create("UICorner", {
-                CornerRadius = UDim.new(1, 0),
-                Parent = SwitchBg
-            })
+            Create("UICorner", { CornerRadius = UDim.new(1, 0), Parent = SwitchBg })
             
             local SwitchCircle = Create("Frame", {
                 Parent = SwitchBg,
@@ -1553,11 +1419,7 @@ function VoraLib:CreateWindow(options)
                 Position = UDim2.new(0, Toggled and 22 or 2, 0.5, 0),
                 Size = UDim2.new(0, 18, 0, 18)
             })
-            
-            Create("UICorner", {
-                CornerRadius = UDim.new(1, 0),
-                Parent = SwitchCircle
-            })
+            Create("UICorner", { CornerRadius = UDim.new(1, 0), Parent = SwitchCircle })
             
             local Button = Create("TextButton", {
                 Parent = ToggleFrame,
@@ -1566,23 +1428,17 @@ function VoraLib:CreateWindow(options)
                 Text = ""
             })
             
-            -- Create the object to return
-            local ToggleObject = {
-                Value = Default
-            }
+            local ToggleObject = { Value = Default }
 
             local function UpdateToggleState(newValue)
                 Toggled = newValue
                 ToggleObject.Value = Toggled
                 
-                local TargetColor = Toggled and Theme.Accent or Color3.fromRGB(45, 45, 50)
+                local TargetColor = Toggled and Theme.Accent or Theme.Background
                 local TargetPos = UDim2.new(0, Toggled and 22 or 2, 0.5, 0)
                 
                 TweenService:Create(SwitchBg, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = TargetColor}):Play()
                 TweenService:Create(SwitchCircle, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position = TargetPos}):Play()
-                
-                -- Save to config
-
                 
                 if #Values > 0 then
                     Callback(Values[Toggled and 2 or 1]) 
@@ -1592,39 +1448,28 @@ function VoraLib:CreateWindow(options)
             end
             
             function ToggleObject:Set(newValue)
-                -- Type validation: ensure boolean
                 if type(newValue) ~= "boolean" then
                     newValue = newValue == true or newValue == "true" or newValue == 1
                 end
                 UpdateToggleState(newValue)
             end
             
-            Button.MouseButton1Click:Connect(function()
-                UpdateToggleState(not Toggled)
-            end)
+            Button.MouseButton1Click:Connect(function() UpdateToggleState(not Toggled) end)
+            if Default then UpdateToggleState(true) end
             
-            if Default then
-                UpdateToggleState(true)
-            end
-            
-
-
             local Flag = options.Flag or ToggleName
             if Flag then Window.Flags[Flag] = ToggleObject end
 
             return ToggleObject
         end
 
-
 		function Tab:CreateSlider(options)
 			options = options or {}
 			local SliderName = options.Name or "Slider"
 			local Min = options.Min or 0
 			local Max = options.Max or 100
-			-- Support both 'Default' and 'Value' for backward compatibility
 			local Default = options.Default or options.Value or Min
 			local Callback = options.Callback or function() end
-
 			
 			local SliderFrame = Create("Frame", {
 				Name = "SliderFrame",
@@ -1635,17 +1480,8 @@ function VoraLib:CreateWindow(options)
 				Size = UDim2.new(1, 0, 0, 55)
 			})
 			
-			Create("UICorner", {
-				CornerRadius = UDim.new(0, 6),
-				Parent = SliderFrame
-			})
-			
-			Create("UIStroke", {
-				Color = Theme.Outline,
-				Transparency = 0.5,
-				Thickness = 1,
-				Parent = SliderFrame
-			})
+			Create("UICorner", { CornerRadius = UDim.new(0, 6), Parent = SliderFrame })
+			Create("UIStroke", { Color = Theme.Outline, Transparency = 0.5, Thickness = 1, Parent = SliderFrame })
 			
 			local Label = Create("TextLabel", {
 				Parent = SliderFrame,
@@ -1666,24 +1502,20 @@ function VoraLib:CreateWindow(options)
 				Size = UDim2.new(1, -24, 0, 20),
 				Font = Enum.Font.Gotham,
 				Text = tostring(Default),
-				TextColor3 = Theme.TextSecondary,
+				TextColor3 = Theme.Accent,
 				TextSize = 14,
 				TextXAlignment = Enum.TextXAlignment.Right
 			})
 			
 			local SliderBarBg = Create("Frame", {
 				Parent = SliderFrame,
-				BackgroundColor3 = Color3.fromRGB(50, 50, 55),
+				BackgroundColor3 = Theme.Background,
 				BackgroundTransparency = 0,
 				BorderSizePixel = 0,
 				Position = UDim2.new(0, 12, 0, 38),
 				Size = UDim2.new(1, -24, 0, 5)
 			})
-			
-			Create("UICorner", {
-				CornerRadius = UDim.new(1, 0),
-				Parent = SliderBarBg
-			})
+			Create("UICorner", { CornerRadius = UDim.new(1, 0), Parent = SliderBarBg })
 			
 			local SliderFill = Create("Frame", {
 				Parent = SliderBarBg,
@@ -1691,11 +1523,7 @@ function VoraLib:CreateWindow(options)
 				BorderSizePixel = 0,
 				Size = UDim2.new((Default - Min) / (Max - Min), 0, 1, 0)
 			})
-			
-			Create("UICorner", {
-				CornerRadius = UDim.new(1, 0),
-				Parent = SliderFill
-			})
+			Create("UICorner", { CornerRadius = UDim.new(1, 0), Parent = SliderFill })
 			
 			local SliderKnob = Create("Frame", {
 				Parent = SliderBarBg,
@@ -1705,11 +1533,7 @@ function VoraLib:CreateWindow(options)
 				Size = UDim2.new(0, 14, 0, 14),
 				ZIndex = 2
 			})
-			
-			Create("UICorner", {
-				CornerRadius = UDim.new(1, 0),
-				Parent = SliderKnob
-			})
+			Create("UICorner", { CornerRadius = UDim.new(1, 0), Parent = SliderKnob })
 			
 			local SliderButton = Create("TextButton", {
 				Parent = SliderBarBg,
@@ -1720,7 +1544,6 @@ function VoraLib:CreateWindow(options)
 			})
 			
 			local Dragging = false
-			
 			local function UpdateSlider(Input)
 				local SizeX = SliderBarBg.AbsoluteSize.X
 				local PosX = SliderBarBg.AbsolutePosition.X
@@ -1731,8 +1554,6 @@ function VoraLib:CreateWindow(options)
 				TweenService:Create(SliderFill, TweenInfo.new(0.05), {Size = UDim2.new(Percent, 0, 1, 0)}):Play()
 				TweenService:Create(SliderKnob, TweenInfo.new(0.05), {Position = UDim2.new(Percent, 0, 0.5, 0)}):Play()
 				ValueLabel.Text = tostring(Value)
-				
-
 				
 				Callback(Value)
 			end
@@ -1758,28 +1579,18 @@ function VoraLib:CreateWindow(options)
 				end
 			end))
 			
-			local SliderObject = {
-				Value = Default
-			}
+			local SliderObject = { Value = Default }
 			
 			function SliderObject:Set(value)
-				-- Type validation: ensure number
-				if type(value) ~= "number" then
-					value = tonumber(value) or Min
-				end
+				if type(value) ~= "number" then value = tonumber(value) or Min end
 				value = math.clamp(value, Min, Max)
 				local percent = (value - Min) / (Max - Min)
 				TweenService:Create(SliderFill, TweenInfo.new(0.3), {Size = UDim2.new(percent, 0, 1, 0)}):Play()
 				TweenService:Create(SliderKnob, TweenInfo.new(0.3), {Position = UDim2.new(percent, 0, 0.5, 0)}):Play()
 				ValueLabel.Text = tostring(value)
 				self.Value = value
-				
-
-				
 				Callback(value)
 			end
-			
-
 			
 			local Flag = options.Flag or SliderName
 			if Flag then Window.Flags[Flag] = SliderObject end
@@ -1797,7 +1608,6 @@ function VoraLib:CreateWindow(options)
             local SideLabel = options.SideLabel
             local Value = options.Value or Default
             local Values = options.Values or {}
-
             
             local InputFrame = Create("Frame", {
                 Name = "InputFrame",
@@ -1807,21 +1617,11 @@ function VoraLib:CreateWindow(options)
                 BorderSizePixel = 0,
                 Size = UDim2.new(1, 0, 0, MultiLine and 100 or 40)
             })
-            
-            Create("UICorner", {
-                CornerRadius = UDim.new(0, 6),
-                Parent = InputFrame
-            })
-            
-            Create("UIStroke", {
-                Color = Theme.Outline,
-                Transparency = 0.5,
-                Thickness = 1,
-                Parent = InputFrame
-            })
+            Create("UICorner", { CornerRadius = UDim.new(0, 6), Parent = InputFrame })
+            Create("UIStroke", { Color = Theme.Outline, Transparency = 0.5, Thickness = 1, Parent = InputFrame })
             
             if SideLabel then
-                local Label = Create("TextLabel", {
+                Create("TextLabel", {
                     Parent = InputFrame,
                     BackgroundTransparency = 1,
                     Position = UDim2.new(0, 12, 0, 0),
@@ -1837,7 +1637,7 @@ function VoraLib:CreateWindow(options)
             
             local InputBoxBg = Create("Frame", {
                 Parent = InputFrame,
-                BackgroundColor3 = Theme.Sidebar,
+                BackgroundColor3 = Theme.Background,
                 BackgroundTransparency = 0,
                 BorderSizePixel = 0,
                 Position = SideLabel and UDim2.new(1, -160, 0.5, 0) or UDim2.new(0, 6, 0, 6),
@@ -1850,17 +1650,8 @@ function VoraLib:CreateWindow(options)
                 InputBoxBg.AnchorPoint = Vector2.new(1, 0.5)
             end
             
-            Create("UICorner", {
-                CornerRadius = UDim.new(0, 4),
-                Parent = InputBoxBg
-            })
-            
-            local InputStroke = Create("UIStroke", {
-                Color = Theme.Outline,
-                Transparency = 0.7,
-                Thickness = 1,
-                Parent = InputBoxBg
-            })
+            Create("UICorner", { CornerRadius = UDim.new(0, 4), Parent = InputBoxBg })
+            local InputStroke = Create("UIStroke", { Color = Theme.Outline, Transparency = 0.7, Thickness = 1, Parent = InputBoxBg })
             
             local TextBox = Create("TextBox", {
                 Parent = InputBoxBg,
@@ -1879,49 +1670,28 @@ function VoraLib:CreateWindow(options)
                 TextWrapped = true
             })
             
-            TextBox.Focused:Connect(function()
-                TweenService:Create(InputStroke, TweenInfo.new(0.2), {Color = Theme.Accent, Transparency = 0}):Play()
-            end)
+            TextBox.Focused:Connect(function() TweenService:Create(InputStroke, TweenInfo.new(0.2), {Color = Theme.Accent, Transparency = 0}):Play() end)
             
-            local InputObject = {
-                Value = Value or Default,
-                Values = Values
-            }
+            local InputObject = { Value = Value or Default, Values = Values }
 
             TextBox.FocusLost:Connect(function(enterPressed)
                 TweenService:Create(InputStroke, TweenInfo.new(0.2), {Color = Theme.Outline, Transparency = 0.7}):Play()
                 local newValue = TextBox.Text
                 InputObject.Value = newValue
-                
-
-                
                 Callback(newValue)
             end)
             
             function InputObject:Set(value)
-                -- Type validation: ensure string
-                if value == nil then
-                    value = ""
-                end
+                if value == nil then value = "" end
                 value = tostring(value)
                 self.Value = value
                 TextBox.Text = tostring(value)
-                
-
-                
                 Callback(tostring(value))
             end
             
-            function InputObject:Get()
-                return self.Value
-            end
+            function InputObject:Get() return self.Value end
+            if (Value or Default) ~= "" then Callback(Value or Default) end
             
-            if (Value or Default) ~= "" then
-                Callback(Value or Default)
-            end
-            
-
-
             local Flag = options.Flag or InputName
             if Flag then Window.Flags[Flag] = InputObject end
 
@@ -1935,18 +1705,12 @@ function VoraLib:CreateWindow(options)
             local Callback = options.Callback or function() end
             local Default = options.Default
 
-            
-            -- Fallback defaults
             if not Default then
                 if #Items > 0 then Default = Items[1] else Default = "..." end
             end
 
-            local DropdownObject = {
-                Value = Default,
-                Items = Items
-            }
+            local DropdownObject = { Value = Default, Items = Items }
             
-            -- 1. Create Dropdown Button in Tab
             local DropdownFrame = Create("Frame", {
                 Name = "DropdownFrame",
                 Parent = Tab.CurrentSectionContainer or TabPage,
@@ -1978,7 +1742,7 @@ function VoraLib:CreateWindow(options)
                 Size = UDim2.new(1, -34, 1, 0),
                 Font = Enum.Font.Gotham,
                 Text = tostring(Default),
-                TextColor3 = Theme.TextSecondary,
+                TextColor3 = Theme.Accent,
                 TextSize = 13,
                 TextXAlignment = Enum.TextXAlignment.Right
             })
@@ -2000,7 +1764,6 @@ function VoraLib:CreateWindow(options)
                 Text = ""
             })
 
-            -- 2. Create Selection Page in DropdownFolder (Shared)
             local SelectOptionsFrame = Create("Frame", {
                 Name = "SelectOptionsFrame",
                 Parent = DropdownFolder,
@@ -2097,7 +1860,6 @@ function VoraLib:CreateWindow(options)
                          
                          ItemBtn.MouseButton1Click:Connect(function()
                              DropdownObject:Set(item)
-                             -- Close Menu
                              if MoreBlur.Visible then
                                 TweenService:Create(MoreBlur, TweenInfo.new(0.25), { BackgroundTransparency = 1 }):Play()
                                 TweenService:Create(DropdownSelect, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.In), { Position = UDim2.new(1, 182, 0.5, 0) }):Play()
@@ -2110,17 +1872,10 @@ function VoraLib:CreateWindow(options)
                 ScrollList.CanvasSize = UDim2.fromOffset(0, UIList.AbsoluteContentSize.Y)
             end
             
-            SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
-                Populate(SearchBox.Text)
-            end)
-            
-            UIList:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-                 ScrollList.CanvasSize = UDim2.fromOffset(0, UIList.AbsoluteContentSize.Y)
-            end)
-
+            SearchBox:GetPropertyChangedSignal("Text"):Connect(function() Populate(SearchBox.Text) end)
+            UIList:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function() ScrollList.CanvasSize = UDim2.fromOffset(0, UIList.AbsoluteContentSize.Y) end)
             Populate("") 
 
-            -- Open Logic
             Button.MouseButton1Click:Connect(function()
                 if not MoreBlur.Visible then
                     Populate("") 
@@ -2136,8 +1891,6 @@ function VoraLib:CreateWindow(options)
             function DropdownObject:Set(value)
                 self.Value = value
                 ValueLabel.Text = tostring(value)
-                
-
                 Callback(value)
             end
             
@@ -2150,16 +1903,12 @@ function VoraLib:CreateWindow(options)
                  Populate("")
             end
 
-
-
             local Flag = options.Flag or DropdownName
             if Flag then Window.Flags[Flag] = DropdownObject end
 
             return DropdownObject
         end
 
-
-		
       function Tab:CreateMultiDropdown(options)
             options = options or {}
             local DropdownName = options.Name or "Multi Dropdown"
@@ -2167,17 +1916,11 @@ function VoraLib:CreateWindow(options)
             local Default = options.Default or options.Value or {}
             local Callback = options.Callback or function() end
 
-            
-            -- Ensure Default is table
             if type(Default) ~= "table" then Default = {} end
 
             local Selected = Default
-            local MultiDropdownObject = {
-                Value = Selected,
-                Values = Items
-            }
+            local MultiDropdownObject = { Value = Selected, Values = Items }
 
-            -- Button Creation
             local DropdownFrame = Create("Frame", {
                 Name = "MultiDropdownFrame",
                 Parent = Tab.CurrentSectionContainer or TabPage,
@@ -2215,7 +1958,7 @@ function VoraLib:CreateWindow(options)
                 Size = UDim2.new(1, -34, 1, 0),
                 Font = Enum.Font.Gotham,
                 Text = GetSelectedText(),
-                TextColor3 = Theme.TextSecondary,
+                TextColor3 = Theme.Accent,
                 TextSize = 13,
                 TextXAlignment = Enum.TextXAlignment.Right
             })
@@ -2237,7 +1980,6 @@ function VoraLib:CreateWindow(options)
                 Text = ""
             })
 
-            -- Shared Drawer Page
             local SelectOptionsFrame = Create("Frame", {
                 Name = "SelectOptionsFrame_Multi",
                 Parent = DropdownFolder,
@@ -2355,7 +2097,6 @@ function VoraLib:CreateWindow(options)
                              end
                              
                              MultiDropdownObject:UpdateLabel()
-
                              Callback(Selected)
                          end)
                     end
@@ -2363,14 +2104,8 @@ function VoraLib:CreateWindow(options)
                 ScrollList.CanvasSize = UDim2.fromOffset(0, UIList.AbsoluteContentSize.Y)
             end
             
-            SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
-                Populate(SearchBox.Text)
-            end)
-            
-            UIList:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-                 ScrollList.CanvasSize = UDim2.fromOffset(0, UIList.AbsoluteContentSize.Y)
-            end)
-
+            SearchBox:GetPropertyChangedSignal("Text"):Connect(function() Populate(SearchBox.Text) end)
+            UIList:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function() ScrollList.CanvasSize = UDim2.fromOffset(0, UIList.AbsoluteContentSize.Y) end)
             Populate("") 
             
             Button.MouseButton1Click:Connect(function()
@@ -2392,8 +2127,6 @@ function VoraLib:CreateWindow(options)
             function MultiDropdownObject:Set(values)
                 Selected = values
                 MultiDropdownObject:UpdateLabel()
-                
-
                 Callback(Selected)
                 Populate(SearchBox.Text)
             end
@@ -2405,18 +2138,14 @@ function VoraLib:CreateWindow(options)
                     if table.find(Items, s) then table.insert(newSel, s) end
                 end
                 Selected = newSel
-                
                 MultiDropdownObject:Set(Selected)
             end
-
-
 
             local Flag = options.Flag or DropdownName
             if Flag then Window.Flags[Flag] = MultiDropdownObject end
 
             return MultiDropdownObject
       end
-
 		
 		function Tab:CreateColorPicker(options)
 			options = options or {}
@@ -2438,17 +2167,8 @@ function VoraLib:CreateWindow(options)
 				ClipsDescendants = true
 			})
 			
-			Create("UICorner", {
-				CornerRadius = UDim.new(0, 6),
-				Parent = PickerFrame
-			})
-			
-			Create("UIStroke", {
-				Color = Theme.Outline,
-				Transparency = 0.5,
-				Thickness = 1,
-				Parent = PickerFrame
-			})
+			Create("UICorner", { CornerRadius = UDim.new(0, 6), Parent = PickerFrame })
+			Create("UIStroke", { Color = Theme.Outline, Transparency = 0.5, Thickness = 1, Parent = PickerFrame })
 			
 			local Label = Create("TextLabel", {
 				Parent = PickerFrame,
@@ -2468,11 +2188,7 @@ function VoraLib:CreateWindow(options)
 				Position = UDim2.new(1, -40, 0, 9),
 				Size = UDim2.new(0, 28, 0, 20)
 			})
-			
-			Create("UICorner", {
-				CornerRadius = UDim.new(0, 4),
-				Parent = Preview
-			})
+			Create("UICorner", { CornerRadius = UDim.new(0, 4), Parent = Preview })
 			
 			local Button = Create("TextButton", {
 				Parent = PickerFrame,
@@ -2489,7 +2205,6 @@ function VoraLib:CreateWindow(options)
 				Visible = true
 			})
 			
-			
 			local SVBox = Create("ImageButton", {
 				Parent = PickerContainer,
 				BackgroundColor3 = Color3.fromHSV(ColorH, 1, 1),
@@ -2499,11 +2214,7 @@ function VoraLib:CreateWindow(options)
 				Image = "rbxassetid://4155801252",
 				AutoButtonColor = false
 			})
-			
-			Create("UICorner", {
-				CornerRadius = UDim.new(0, 4),
-				Parent = SVBox
-			})
+			Create("UICorner", { CornerRadius = UDim.new(0, 4), Parent = SVBox })
 			
 			local SVCursor = Create("Frame", {
 				Parent = SVBox,
@@ -2513,18 +2224,8 @@ function VoraLib:CreateWindow(options)
 				Size = UDim2.new(0, 6, 0, 6),
 				ZIndex = 2
 			})
-			
-			Create("UICorner", {
-				CornerRadius = UDim.new(1, 0),
-				Parent = SVCursor
-			})
-			
-			Create("UIStroke", {
-				Color = Color3.new(0, 0, 0),
-				Thickness = 1,
-				Parent = SVCursor
-			})
-			
+			Create("UICorner", { CornerRadius = UDim.new(1, 0), Parent = SVCursor })
+			Create("UIStroke", { Color = Color3.new(0, 0, 0), Thickness = 1, Parent = SVCursor })
 			
 			local HueBar = Create("ImageButton", {
 				Parent = PickerContainer,
@@ -2534,11 +2235,7 @@ function VoraLib:CreateWindow(options)
 				Size = UDim2.new(1, 0, 0, 20),
 				AutoButtonColor = false
 			})
-			
-			Create("UICorner", {
-				CornerRadius = UDim.new(0, 4),
-				Parent = HueBar
-			})
+			Create("UICorner", { CornerRadius = UDim.new(0, 4), Parent = HueBar })
 			
 			Create("UIGradient", {
 				Parent = HueBar,
@@ -2562,18 +2259,8 @@ function VoraLib:CreateWindow(options)
 				Size = UDim2.new(0, 6, 1, 4),
 				ZIndex = 2
 			})
-			
-			Create("UICorner", {
-				CornerRadius = UDim.new(0, 2),
-				Parent = HueCursor
-			})
-			
-			Create("UIStroke", {
-				Color = Color3.new(0, 0, 0),
-				Thickness = 1,
-				Parent = HueCursor
-			})
-			
+			Create("UICorner", { CornerRadius = UDim.new(0, 2), Parent = HueCursor })
+			Create("UIStroke", { Color = Color3.new(0, 0, 0), Thickness = 1, Parent = HueCursor })
 			
 			local function UpdateColor()
 				ColorVal = Color3.fromHSV(ColorH, ColorS, ColorV)
@@ -2585,18 +2272,12 @@ function VoraLib:CreateWindow(options)
 			local DraggingSV = false
 			local DraggingHue = false
 			
-			SVBox.MouseButton1Down:Connect(function()
-				DraggingSV = true
-			end)
-			
-			HueBar.MouseButton1Down:Connect(function()
-				DraggingHue = true
-			end)
+			SVBox.MouseButton1Down:Connect(function() DraggingSV = true end)
+			HueBar.MouseButton1Down:Connect(function() DraggingHue = true end)
 			
 			table.insert(Connections, UserInputService.InputEnded:Connect(function(input)
 				if input.UserInputType == Enum.UserInputType.MouseButton1 then
-					DraggingSV = false
-					DraggingHue = false
+					DraggingSV = false; DraggingHue = false
 				end
 			end))
 			
@@ -2605,15 +2286,12 @@ function VoraLib:CreateWindow(options)
 					if DraggingSV then
 						local rX = math.clamp((input.Position.X - SVBox.AbsolutePosition.X) / SVBox.AbsoluteSize.X, 0, 1)
 						local rY = math.clamp((input.Position.Y - SVBox.AbsolutePosition.Y) / SVBox.AbsoluteSize.Y, 0, 1)
-						
 						ColorS = rX
 						ColorV = 1 - rY
-						
 						SVCursor.Position = UDim2.new(ColorS, -3, 1 - ColorV, -3)
 						UpdateColor()
 					elseif DraggingHue then
 						local rX = math.clamp((input.Position.X - HueBar.AbsolutePosition.X) / HueBar.AbsoluteSize.X, 0, 1)
-						
 						ColorH = rX
 						HueCursor.Position = UDim2.new(ColorH, -3, 0, -2)
 						UpdateColor()
@@ -2628,8 +2306,7 @@ function VoraLib:CreateWindow(options)
 
             local ColorObject = { Value = Default }
             function ColorObject:Set(val)
-                self.Value = val
-                ColorVal = val
+                self.Value = val; ColorVal = val
                 local h,s,v = val:ToHSV()
                 ColorH, ColorS, ColorV = h, s, v
                 Preview.BackgroundColor3 = val
@@ -2660,17 +2337,8 @@ function VoraLib:CreateWindow(options)
 				Size = UDim2.new(1, 0, 0, 38)
 			})
 			
-			Create("UICorner", {
-				CornerRadius = UDim.new(0, 6),
-				Parent = KeybindFrame
-			})
-			
-			Create("UIStroke", {
-				Color = Theme.Outline,
-				Transparency = 0.5,
-				Thickness = 1,
-				Parent = KeybindFrame
-			})
+			Create("UICorner", { CornerRadius = UDim.new(0, 6), Parent = KeybindFrame })
+			Create("UIStroke", { Color = Theme.Outline, Transparency = 0.5, Thickness = 1, Parent = KeybindFrame })
 			
 			local Label = Create("TextLabel", {
 				Parent = KeybindFrame,
@@ -2687,33 +2355,23 @@ function VoraLib:CreateWindow(options)
 			local KeybindButton = Create("TextButton", {
 				Parent = KeybindFrame,
 				BackgroundColor3 = Theme.Background,
-				BackgroundTransparency = 0.5,
+				BackgroundTransparency = 0,
 				BorderSizePixel = 0,
 				Position = UDim2.new(1, -95, 0.5, -12),
 				Size = UDim2.new(0, 85, 0, 24),
 				Font = Enum.Font.Gotham,
 				Text = Default.Name,
-				TextColor3 = Theme.TextSecondary,
+				TextColor3 = Theme.Accent,
 				TextSize = 13,
 				ClipsDescendants = true
 			})
 			
-			Create("UICorner", {
-				CornerRadius = UDim.new(0, 4),
-				Parent = KeybindButton
-			})
-			
-			Create("UIStroke", {
-				Color = Theme.Outline,
-				Transparency = 0.7,
-				Thickness = 1,
-				Parent = KeybindButton
-			})
+			Create("UICorner", { CornerRadius = UDim.new(0, 4), Parent = KeybindButton })
+			Create("UIStroke", { Color = Theme.Outline, Transparency = 0.7, Thickness = 1, Parent = KeybindButton })
 			
 			local Binding = false
 			
 			KeybindButton.MouseButton1Click:Connect(function()
-				
 				task.spawn(function()
 					local Mouse = Players.LocalPlayer:GetMouse()
 					local Ripple = Create("Frame", {
@@ -2725,18 +2383,13 @@ function VoraLib:CreateWindow(options)
 						Size = UDim2.new(0, 0, 0, 0),
 						ZIndex = 2
 					})
-					
-					Create("UICorner", {
-						CornerRadius = UDim.new(1, 0),
-						Parent = Ripple
-					})
+					Create("UICorner", { CornerRadius = UDim.new(1, 0), Parent = Ripple })
 
 					local Tween = TweenService:Create(Ripple, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
 						Size = UDim2.new(0, 100, 0, 100),
 						Position = UDim2.new(0, Mouse.X - KeybindButton.AbsolutePosition.X - 50, 0, Mouse.Y - KeybindButton.AbsolutePosition.Y - 50),
 						BackgroundTransparency = 1
 					})
-					
 					Tween:Play()
 					Tween.Completed:Wait()
 					Ripple:Destroy()
@@ -2744,7 +2397,7 @@ function VoraLib:CreateWindow(options)
 
 				Binding = true
 				KeybindButton.Text = "..."
-				TweenService:Create(KeybindButton, TweenInfo.new(0.2), {TextColor3 = Theme.Accent}):Play()
+				TweenService:Create(KeybindButton, TweenInfo.new(0.2), {TextColor3 = Theme.TextColor}):Play()
 			end)
 			
 			table.insert(Connections, UserInputService.InputBegan:Connect(function(Input)
@@ -2753,12 +2406,12 @@ function VoraLib:CreateWindow(options)
 						Default = Input.KeyCode
 						KeybindButton.Text = Default.Name
 						Binding = false
-						TweenService:Create(KeybindButton, TweenInfo.new(0.2), {TextColor3 = Theme.TextSecondary}):Play()
+						TweenService:Create(KeybindButton, TweenInfo.new(0.2), {TextColor3 = Theme.Accent}):Play()
 						Callback(Default)
 					elseif Input.UserInputType == Enum.UserInputType.MouseButton1 then
 						Binding = false
 						KeybindButton.Text = Default.Name
-						TweenService:Create(KeybindButton, TweenInfo.new(0.2), {TextColor3 = Theme.TextSecondary}):Play()
+						TweenService:Create(KeybindButton, TweenInfo.new(0.2), {TextColor3 = Theme.Accent}):Play()
 					end
 				else
 					if Input.KeyCode == Default then
@@ -2844,10 +2497,10 @@ function VoraLib:Destroy()
 	Connections = {}
 	
 	if RunService:IsStudio() then
-		local gui = Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("VoraHub")
+		local gui = Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("VoraHub_Periwinkle")
 		if gui then gui:Destroy() end
 	else
-		local gui = CoreGui:FindFirstChild("VoraHub")
+		local gui = CoreGui:FindFirstChild("VoraHub_Periwinkle")
 		if gui then gui:Destroy() end
 	end
 end
