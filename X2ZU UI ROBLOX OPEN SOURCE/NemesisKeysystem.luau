@@ -26,7 +26,7 @@ local x2zu = {}
 x2zu.Appearance = {
     Title = "Nemesis",
     Subtitle = "Enter your key to continue",
-    Icon = "rbxassetid://101110160179149",
+    Icon = "rbxassetid://79384301639107",
     IconSize = UDim2.new(0, 30, 0, 30)
 }
 
@@ -53,21 +53,21 @@ x2zu.Options = {
 
 -- theme
 x2zu.Theme = {
-    Accent = Color3.fromRGB(142, 130, 254), -- Periwinkle Purple (utama)
-    AccentHover = Color3.fromRGB(120, 110, 230), -- lebih soft pas hover
-    Background = Color3.fromRGB(12, 12, 12), -- hitam pekat biar clean
-    Header = Color3.fromRGB(18, 18, 18), -- sedikit beda biar ada depth
+    Accent = Color3.fromRGB(142, 130, 254), 
+    AccentHover = Color3.fromRGB(120, 110, 230),
+    Background = Color3.fromRGB(12, 12, 12),
+    Header = Color3.fromRGB(18, 18, 18), 
     Input = Color3.fromRGB(22, 22, 22),
-    Text = Color3.fromRGB(245, 245, 245), -- putih lembut (ga terlalu terang)
+    Text = Color3.fromRGB(245, 245, 245),
     TextDim = Color3.fromRGB(140, 140, 140),
-    Success = Color3.fromRGB(80, 200, 140), -- hijau soft
-    Error = Color3.fromRGB(220, 80, 90), -- merah ga terlalu nyolok
-    Warning = Color3.fromRGB(240, 170, 70), -- oren warm
-    StatusIdle = Color3.fromRGB(100, 100, 120), -- netral ke abu-ungu dikit
+    Success = Color3.fromRGB(80, 200, 140), 
+    Error = Color3.fromRGB(220, 80, 90), 
+    Warning = Color3.fromRGB(240, 170, 70), 
+    StatusIdle = Color3.fromRGB(100, 100, 120), 
     Discord = Color3.fromRGB(88, 101, 242),
     DiscordHover = Color3.fromRGB(114, 137, 218),
-    Divider = Color3.fromRGB(40, 40, 40), -- abu gelap
-    Pending = Color3.fromRGB(55, 55, 65) -- sedikit hint purple biar nyambung
+    Divider = Color3.fromRGB(40, 40, 40),
+    Pending = Color3.fromRGB(55, 55, 65) 
 }
 
 -- callbacks
